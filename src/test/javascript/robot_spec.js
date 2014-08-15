@@ -1,20 +1,44 @@
-Robot.describe("testHttpOrSomething.rpt", 3000, function() {
-	before
-	it("shouldMakeAHttpRequest", function(done) {
-		Robot.join();
-		setTimeout(function() {
-			expect(true).toBe(true);
-			done();
-		}, 900);
+describe("testHttpOrSomething.rpt", function() {
+	var originalTimeout;
+	beforeEach(function() {
+		originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+		jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 	});
 	
-	var annotations = { Timeout: 3000, Robotic: {script:'...'}, Origin };
-	it("shouldMakeAHttpRequest", annotations, function(done) {
-		Robot.join();
-		setTimeout(function() {
-			expect(true).toBe(true);
+	// test case
+	it("testIT", function(done) {
+		
+		// check results
+		var callback = function(expectedScript, observedScript) {
+			console.log("I am called on completion");
+			expect(expectedScript).toEqual(observedScript);
 			done();
-		}, 900);
-	}, );
+		};
+		
+		// test code
+		var myCode = function() {
+			console.log("Running my code");
+			
+		};
+		
+		
+		// do test
+		var robot = new RobotTest("script_path", 2000, null, callback);
+		
+		// execute test
+		robot.prepare(function() {
+			console.log("PREPARED CALLBACK");
+			robot.start(function() {
+				console.log("STARTED CALLBACK");
+				// execute my code here
+				myCode();
+			});
+		});
+	});
+	
+	
+	afterEach(function() {
+		jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+	});
 });
 
