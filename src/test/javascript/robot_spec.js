@@ -41,4 +41,3 @@ describe("testHttpOrSomething.rpt", function() {
 		jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
 	});
 });
-
