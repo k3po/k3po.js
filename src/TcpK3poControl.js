@@ -45,7 +45,6 @@ TcpK3poControl.prototype.prepare = function (scripts) {
  * Starts the robot
  */
 TcpK3poControl.prototype.start = function () {
-    console.log("STARTING " + this.state);
     this.client.write(this.makeStart());
 };
 

@@ -105,7 +105,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-jasmine-node');
 
     // tasks
-//    grunt.registerTask('test', ['k3po:start', 'jasmine_node']);
+    grunt.registerTask('test', ['k3po:start', 'nodeunit']);
 //    grunt.registerTask('browser-test', ['k3po:start', 'karma', 'k3po:stop']);
     grunt.registerTask('default', ['jshint', 'clean', 'k3po:start', 'nodeunit', 'jasmine_node', 'k3po:stop']);
 //    grunt.registerTask('default', ['jshint', 'clean', 'k3po:start', 'nodeunit', 'jasmine_node', 'karma:test', 'k3po:stop']);
