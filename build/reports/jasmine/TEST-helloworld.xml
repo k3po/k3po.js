@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+<testsuite name="hello world" errors="0" tests="1" failures="0" time="0.003" timestamp="2014-11-04T11:18:09">
+  <testcase classname="hello world" name="contains spec with an expectation" time="0.002"></testcase>
+</testsuite>
+</testsuites>
