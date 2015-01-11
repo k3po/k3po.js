@@ -1,4 +1,1 @@
-robot.js
-========
-
-Robot Jasmin Test Framework
+# K3PO for JavaScript
