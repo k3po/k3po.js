@@ -76,23 +76,28 @@ module.exports = function (grunt) {
             }
         },
 
-        // Test for robot test framework jasmine
-        jasmine_node: {
-            options: {
-                forceExit: true,
-                match: '.',
-                matchall: false,
-                extensions: 'js',
-                specNameMatcher: 'spec',
-                jUnit: {
-                    report: true,
-                    savePath : "./build/reports/jasmine/",
-                    useDotNotation: true,
-                    consolidate: true
+        mochaTest: {
+            test: {
+                options: {
+                    reporter: 'spec',
+                    //captureFile : "tobedecided.txt"
+                    quiet:false
+                },
+                src: ['test/**/*spec.js']
+            }
+        },
+
+        connect: {
+            server: {
+                options: {
+                    port: 8080,
+                    hostname: 'localhost',
+                    base: "test/web",
+                    keepalive: false
                 }
-            },
-            all: ['test/']
+            }
         }
+
     });
 
     // These plugins provide necessary tasks.
@@ -102,11 +107,14 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-k3po');
     grunt.loadNpmTasks('grunt-contrib-nodeunit');
-    grunt.loadNpmTasks('grunt-jasmine-node');
+    grunt.loadNpmTasks('grunt-mocha-test');
+    grunt.loadNpmTasks('grunt-contrib-connect');
 
-    // tasks
-    grunt.registerTask('test', ['k3po:start', 'nodeunit']);
-//    grunt.registerTask('browser-test', ['k3po:start', 'karma', 'k3po:stop']);
-    grunt.registerTask('default', ['jshint', 'clean', 'k3po:start', 'nodeunit', 'jasmine_node', 'k3po:stop']);
-//    grunt.registerTask('default', ['jshint', 'clean', 'k3po:start', 'nodeunit', 'jasmine_node', 'karma:test', 'k3po:stop']);
+    // DPW - Current working setup is running the following 3 tasks in two teminals
+    grunt.registerTask('runRobot', ['k3po:daemon']);
+    grunt.regitserTask('startServer', ['connect']);
+    grunt.regitsterTask('testBBosh', ['mochaTest']);
+
+    // DPW - This does not work currently becuase of bugs stopping the robot, and stopping nodeunit
+    grunt.registerTask('default', ['jshint', 'clean', 'k3po:start', 'connect', 'nodeunit', 'mochaTest', 'k3po:stop']);
 };

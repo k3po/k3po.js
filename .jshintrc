@@ -10,6 +10,6 @@
     "boss": true,
     "eqnull": true,
     "node": true,
-    "predef": ["jasmine", "describe", "it", "beforeEach", "afterEach", "expect"]
+    "predef": ["describe", "it", "beforeEach", "afterEach", "expect", "before", "after"]
 }
 

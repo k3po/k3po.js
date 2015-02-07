@@ -26,7 +26,7 @@ function K3poAssert(test, args, callback) {
  * @param callback
  */
 K3poAssert.prototype.assert = function (callback) {
-    this.runner.start(callback);
+    this.runner.finish(callback);
 };
 
 module.exports = K3poAssert;

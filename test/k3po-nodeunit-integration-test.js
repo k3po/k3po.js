@@ -7,20 +7,20 @@ exports.k3poNodeunitIntegrationTest = {
     },
 
     testRunControlProtocolPass: function (test) {
-        test.expect(2);
+        test.expect(3);
         var k3po = new this.K3poAssert(test, {
-                "scripts": ["org/kaazing/robotic/control/accept.finished.empty", "org/kaazing/robotic/control/connect.finished.empty"],
-                "verbose": true
+                "scripts": [
+                    "org/kaazing/robotic/control/accept.finished.empty", "org/kaazing/robotic/control/connect.finished.empty"
+                ]
             },
             function () {
                 k3po.assert(function(){
                     test.done();
                 });
-                // extra assert to show count of asserts is working
-                test.equal(true, true);
-            }
+                // extra assert to show # of declared asserts is working
+                test.equal(true, true);            }
         );
+        // extra assert to show # of declared asserts is working
+        test.equal(true, true);
     }
 };
-
-
