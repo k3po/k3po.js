@@ -4,10 +4,11 @@ k3po.js is used to run [K3po Scripts](https://github.com/k3po/k3po/wiki/Scriptin
 
 It consists of 
 
-1. bbosh.js, a streaming [Binary Bidirectional Streams Over HTTP transport protocol](https://github.com/k3po/k3po/tree/develop/specification/bbosh) that can be used in the browser on which to connect to the [K3po Driver](https://github.com/k3po/k3po/tree/develop/driver).
-2. k3po-control.js, a [k3po control protocol](https://github.com/k3po/k3po/tree/develop/specification/k3po.control) that is used by talk to the [K3po Driver](https://github.com/k3po/k3po/tree/develop/driver)
-3. jasmine-k3po.js, a [jasmine](http://jasmine.github.io/) plugin that can control k3po scripts as part of the test framework
-4. mocha-k3po.js, a [mocha](https://mochajs.org/) plugin that can control k3po scripts as part of the test framework
+1. Transport.js abstract class that is used by K3poControl.js to connect to the [K3po Driver](https://github.com/k3po/k3po/tree/develop/driver)
+1. BBoshTransport.js, a streaming [Binary Bidirectional Streams Over HTTP transport protocol](https://github.com/k3po/k3po/tree/develop/specification/bbosh) that implements K3poControlTransport and that can be used in the browser on which to connect to the [K3po Driver](https://github.com/k3po/k3po/tree/develop/driver).
+1. TcpTransport.js, a node tcp implementation of Transport.js that can be used to control k3po from node
+1. K3poControl.js, a [k3po control protocol](https://github.com/k3po/k3po/tree/develop/specification/k3po.control) that is used by talk to the [K3po Driver](https://github.com/k3po/k3po/tree/develop/driver) via a K3poTransport that provides an API for starting/stopping k3po scripts
+1. mocha-k3po.js, a [mocha](https://mochajs.org/) plugin that can control k3po scripts as part of the test framework
 
 The [K3po driver](https://github.com/k3po/k3po/tree/develop/driver) is launched prior to tests via [grunt-k3po](https://github.com/k3po/grunt-k3po) plugin
 
