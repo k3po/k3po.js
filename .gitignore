@@ -27,3 +27,6 @@ node_modules
 # IDE
 .idea
 .projectFileBackup
+
+# Operating systems
+.DS_Store

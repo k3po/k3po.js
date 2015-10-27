@@ -17,3 +17,10 @@ The [K3po driver](https://github.com/k3po/k3po/tree/develop/driver) is launched 
 The following outlines the logical steps to use k3po.js to test a browser javascript library 
 
 ![overview](https://raw.github.com/k3po/k3po.js/develop/design.jpg)
+
+
+### Building
+
+1. install grunt-k3po plugin (needed as it is not officiall released yet).  `npm install <directory of grunt-plugin>`
+1. `npm install`
+1. `grunt`
