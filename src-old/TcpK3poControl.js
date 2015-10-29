@@ -1,7 +1,7 @@
 'use strict';
 
 var net = require('net');
-var K3poControl = require('../src/K3poControl.js');
+var K3poControl = require('../src/base/K3poControl.js');
 
 function TcpK3poControl(host, port, verbose) {
     this.port = port;

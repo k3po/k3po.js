@@ -1,7 +1,5 @@
 'use strict';
 
-var ControlTransportFactory = require(ControlTransportFactory);
-
 /**
  * Command is an abstract class that represents a K3po Command
  * @param type
@@ -200,21 +198,41 @@ StartedEvent.prototype = Object.create(Event.prototype);
 
 StartedEvent.prototype.constructor = StartedEvent;
 
-/**
- * AbstractK3poTransport.js is a generic transport class that can be implemented to provide K3poControl.js
- * methods to reliably talk to K3poDriver.java
- */
 
-function K3poControl(connectURL) {
-    this.connection = ControlTransportFactory.createConnection(connectURL);
+/**
+ * K3poControl is a class that connects to K3poControl
+ * @param connectURL
+ * @constructor
+ */
+function K3poControl() {
+    this.transportFactory
+
 }
+
+/**
+ * Add a K3po transport on which Control can establish connections based on scheme.
+ * @param transport
+ */
+K3poControl.prototype.addTransport = function(transport){
+    var scheme = transport.getScheme();
+    this.schemeToTransportMap[scheme] = transport;
+};
 
 /**
  * Connects to the K3po Server
  * @param callback
  */
-K3poControl.prototype.connect = function (callback) {
-    this.connection.connect(callback);
+K3poControl.prototype.connect = function (connectURL, callback) {
+    var getUrlScheme = function (url) {
+        return url.split(":")[0];
+    };
+
+    var scheme = getUrlScheme(connectURL);
+    var transportFactory = this.schemeToTransportMap[scheme];
+    if (!transportFactory) {
+        throw ("Could not load transport factory for scheme: " + scheme);
+    }
+    return transportFactory.connect(connectURL, callback);
 };
 
 /**
@@ -352,3 +370,5 @@ K3poControl.prototype.readEvent = function (callback) {
 
     this.connection.readEvent(parseEvent);
 };
+
+module.exports = K3poControl;

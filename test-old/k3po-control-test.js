@@ -2,7 +2,7 @@
 
 exports.k3poControlTest = {
     setUp: function (done) {
-        var K3poControl = require('../src/K3poControl.js');
+        var K3poControl = require('../src/base/K3poControl.js');
         this.testRobotControl = new K3poControl(false);
         done();
     },
