@@ -1,13 +1,9 @@
 /**
- * Interface that ControlTransportFactory can create connections from
+ * Interface for K3po Control Transports
  * @constructor
  */
-var ControlTransportApi = function(scheme) {
-    this.scheme = scheme;
-};
+var ControlTransportApi = function() {
 
-ControlTransportApi.prototype.getScheme = function () {
-    return this.scheme;
 };
 
 /**

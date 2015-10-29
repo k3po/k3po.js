@@ -1,5 +1,7 @@
 'use strict';
 
+var controlTransportFactory = require("../../src/base/ControlTransportFactory.js");
+
 /**
  * Command is an abstract class that represents a K3po Command
  * @param type
@@ -205,34 +207,15 @@ StartedEvent.prototype.constructor = StartedEvent;
  * @constructor
  */
 function K3poControl() {
-    this.transportFactory
 
 }
-
-/**
- * Add a K3po transport on which Control can establish connections based on scheme.
- * @param transport
- */
-K3poControl.prototype.addTransport = function(transport){
-    var scheme = transport.getScheme();
-    this.schemeToTransportMap[scheme] = transport;
-};
 
 /**
  * Connects to the K3po Server
  * @param callback
  */
 K3poControl.prototype.connect = function (connectURL, callback) {
-    var getUrlScheme = function (url) {
-        return url.split(":")[0];
-    };
-
-    var scheme = getUrlScheme(connectURL);
-    var transportFactory = this.schemeToTransportMap[scheme];
-    if (!transportFactory) {
-        throw ("Could not load transport factory for scheme: " + scheme);
-    }
-    return transportFactory.connect(connectURL, callback);
+    controlTransportFactory.connect(connectURL, callback);
 };
 
 /**

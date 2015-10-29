@@ -1,18 +1,18 @@
 'use strict';
 
+require('../test/TestTransportFactory.js');
 var K3poControl = require('../src/base/K3poControl.js');
-var TestTransport = require('../test/TestTransport.js');
 
 describe("K3poControl", function () {
     var control;
 
     beforeEach(function () {
         console.log("test://localhost");
-        control = new K3poControl("test://localhost.com");
+        control = new K3poControl();
     });
 
     it("should load TestControlTransport", function (done) {
-        // TODO
+        control.connect("test://localhost.com", null);
         done();
     });
 
