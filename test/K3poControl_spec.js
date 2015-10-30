@@ -91,7 +91,7 @@ describe("K3poControl", function () {
 
         control.connect(url, function () {
         });
-        control.onEvent(function (event) {
+        control.on("ERROR", function (event) {
             assert.equal(event.getType(), "ERROR");
             assert.equal(event.getDescription(), description);
             assert.equal(event.getSummary(), summary);
@@ -112,7 +112,7 @@ describe("K3poControl", function () {
 
         control.connect(url, function () {
         });
-        control.onEvent(function (event) {
+        control.on("FINISHED", function (event) {
             assert.equal(event.getType(), "FINISHED");
             assert.equal(event.getScript(), script);
             done();
@@ -132,7 +132,7 @@ describe("K3poControl", function () {
 
         control.connect(url, function () {
         });
-        control.onEvent(function (event) {
+        control.on("NOTIFIED", function (event) {
             assert.equal(event.getType(), "NOTIFIED");
             assert.equal(event.getBarrier(), barrier);
             done();
@@ -152,7 +152,7 @@ describe("K3poControl", function () {
 
         control.connect(url, function () {
         });
-        control.onEvent(function (event) {
+        control.on("PREPARED", function (event) {
             assert.equal(event.getType(), "PREPARED");
             assert.equal(event.getScript(), script);
             done();
@@ -168,7 +168,7 @@ describe("K3poControl", function () {
 
         control.connect(url, function () {
         });
-        control.onEvent(function (event) {
+        control.addEventListener("STARTED", function (event) {
             assert.equal(event.getType(), "STARTED");
             done();
         });

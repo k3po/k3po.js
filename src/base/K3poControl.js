@@ -246,17 +246,29 @@ K3poControl.prototype.sendCommand = function (cmd, callback) {
     }
 };
 
-/**
- * Reads a Event from the K3poDriver
- * @param callback, which is called with the event, i.e. callback(event)
- */
-K3poControl.prototype.onEvent = function (callback) {
-    this.onEventCallback = callback;
-    while (this.queuedEvents.length > 0) {
-        this.onEventCallback(this.queuedEvents.shift());
+K3poControl.prototype.on = function (event, listener){
+    switch (event) {
+        case "ERROR":
+        case "FINISHED":
+        case "NOTIFIED":
+        case "PREPARED":
+        case "STARTED":
+            // TODO, as of know there is only one listener per event type
+            this.eventCallbacks[event] = listener;
+            break;
+        default:
+            throw ("Unrecognized event to register too: " + event);
     }
-
+    for(var i = 0; i < this.queuedEvents.length; i ++){
+        var e = this.queuedEvents[i];
+        if(e.getType() === event){
+            listener(e);
+            this.queuedEvents.splice(i, 1);
+        }
+    }
 };
+
+K3poControl.prototype.addEventListener = K3poControl.prototype.on;
 
 /**
  * K3poControl is a class that connects to K3poControl
@@ -266,7 +278,7 @@ K3poControl.prototype.onEvent = function (callback) {
 function K3poControl() {
     this.connection = null;
     this.queuedEvents = [];
-    this.onEventCallback = null;
+    this.eventCallbacks = [];
 }
 
 /**
@@ -360,10 +372,10 @@ K3poControl.prototype.connect = function (connectURL, callback) {
                 default:
                     throw ("Unrecognized event: " + eventType);
             }
-            if (_this.onEventCallback == null) {
+            if (_this.eventCallbacks[eventType] == null) {
                 _this.queuedEvents.push(event);
             } else {
-                _this.onEventCallback(event);
+                _this.eventCallbacks[eventType](event);
             }
         });
 };
