@@ -200,32 +200,6 @@ StartedEvent.prototype = Object.create(Event.prototype);
 
 StartedEvent.prototype.constructor = StartedEvent;
 
-
-/**
- * K3poControl is a class that connects to K3poControl
- * @param connectURL
- * @constructor
- */
-function K3poControl() {
-    this.connection = null;
-}
-
-/**
- * Connects to the K3po Server
- * @param callback
- */
-K3poControl.prototype.connect = function (connectURL, callback) {
-    this.connection = controlTransportFactory.connect(connectURL, callback);
-};
-
-/**
- * Disconnects from the K3poDriver
- * @param callback
- */
-K3poControl.prototype.disconnect = function (callback) {
-    this.connection.disconnect(callback);
-};
-
 /**
  * Sends a Command to the K3poDriver
  * @param cmd
@@ -241,7 +215,7 @@ K3poControl.prototype.sendCommand = function (cmd, callback) {
                 break;
             case "AWAIT":
                 buf += "AWAIT\n";
-                buf +="barrier" + cmd.getBarrier() + "\n";
+                buf += "barrier" + cmd.getBarrier() + "\n";
                 buf += "\n";
                 break;
             case "NOTIFY":
@@ -276,86 +250,124 @@ K3poControl.prototype.sendCommand = function (cmd, callback) {
  * Reads a Event from the K3poDriver
  * @param callback, which is called with the event, i.e. callback(event)
  */
-K3poControl.prototype.readEvent = function (callback) {
-    function parseEvent(message) {
-        var eventTypeTerminator = message.indexOf("\n");
-        var headerTerminator = message.indexOf("\n\n");
-        var contentTerminator = message.length;
-        var eventType = message.substr(0, eventTypeTerminator);
-        var headers = message.substr(eventTypeTerminator + 1, headerTerminator);
-        var content = message.substr(headerTerminator + 2, contentTerminator);
-        var event;
-
-        function parseHeaders(headers) {
-            var result = {};
-            headers = headers.split("\n");
-            for (var i = 0; i < headers.length; i++) {
-                var r = headers[i].split(":");
-                var key = r[0];
-                var value = r[1];
-                result[key] = value;
-            }
-            return result;
-        }
-
-        function parseError(headers, content) {
-            headers = parseHeaders(headers);
-            var summary = headers["summary"];
-            var contentLength = headers["content-length"];
-            if (parseInt(contentLength) === content.length) {
-                return new ErrorEvent(summary, content);
-            } else {
-                throw "TODO, error reading Error event, need to handle dynamic buffers in transport";
-            }
-        }
-
-        function parseFinished(headers, content) {
-            headers = parseHeaders(headers);
-            var contentLength = headers["content-length"];
-            if (parseInt(contentLength) === content.length) {
-                return new FinishedEvent(content);
-            } else {
-                throw "TODO, error reading Finished event, need to handle dynamic buffers in transport";
-            }
-        }
-
-        function parseNotified(headers) {
-            headers = parseHeaders(headers);
-            var barrier = headers["barrier"];
-            return new NotifiedEvent(barrier);
-        }
-
-        function parsePrepared() {
-            return new StartedEvent();
-        }
-
-        function parseStarted(headers, content) {
-
-        }
-
-        switch (eventType) {
-            case "ERROR":
-                event = parseError(headers, content);
-                break;
-            case "FINISHED":
-                event = parseFinished(headers, content);
-                break;
-            case "NOTIFIED":
-                event = parseNotified(headers);
-                break;
-            case "PreparedEvent":
-                event = parsePrepared(headers, content);
-                break;
-            case "StartedEvent":
-                event = parseStarted();
-                break;
-            default:
-                throw ("Unrecognized event: " + eventType);
-        }
-        callback(event);
+K3poControl.prototype.onEvent = function (callback) {
+    this.onEventCallback = callback;
+    while (this.queuedEvents.length > 0) {
+        this.onEventCallback(this.queuedEvents.shift());
     }
 
-    this.connection.read(parseEvent);
+};
+
+/**
+ * K3poControl is a class that connects to K3poControl
+ * @param connectURL
+ * @constructor
+ */
+function K3poControl() {
+    this.connection = null;
+    this.queuedEvents = [];
+    this.onEventCallback = null;
+}
+
+function parseHeaders(headers) {
+    var result = {};
+    headers = headers.split("\n");
+    for (var i = 0; i < headers.length; i++) {
+        var r = headers[i].split(":");
+        var key = r[0];
+        var value = r[1];
+        result[key] = value;
+    }
+    return result;
+}
+
+function parseError(headers, content) {
+    headers = parseHeaders(headers);
+    var summary = headers["summary"];
+    var contentLength = headers["content-length"];
+    if (parseInt(contentLength) === content.length) {
+        return new ErrorEvent(summary, content);
+    } else {
+        throw "TODO, error reading Error event, need to handle dynamic buffers in transport";
+    }
+}
+
+function parseFinished(headers, content) {
+    headers = parseHeaders(headers);
+    var contentLength = headers["content-length"];
+    if (parseInt(contentLength) === content.length) {
+        return new FinishedEvent(content);
+    } else {
+        throw "TODO, error reading Finished event, need to handle dynamic buffers in transport";
+    }
+}
+
+function parseNotified(headers) {
+    headers = parseHeaders(headers);
+    var barrier = headers["barrier"];
+    return new NotifiedEvent(barrier);
+}
+
+function parsePrepared(headers, content) {
+    // TODO
+}
+
+function parseStarted() {
+    return new StartedEvent()
+}
+
+/**
+ * Connects to the K3po Server
+ * @param callback
+ */
+K3poControl.prototype.connect = function (connectURL, callback) {
+    this.connection = controlTransportFactory.connect(connectURL, callback);
+
+    var _this = this;
+
+    this.connection.onMessage(
+        function (message) {
+            var eventTypeTerminator = message.indexOf("\n");
+            var headerTerminator = message.indexOf("\n\n");
+            var contentTerminator = message.length;
+            var eventType = message.substr(0, eventTypeTerminator);
+            var headers = message.substr(eventTypeTerminator + 1, headerTerminator);
+            var content = message.substr(headerTerminator + 2, contentTerminator);
+            var event;
+
+            switch (eventType) {
+                case "ERROR":
+                    event = parseError(headers, content);
+                    break;
+                case "FINISHED":
+                    event = parseFinished(headers, content);
+                    break;
+                case "NOTIFIED":
+                    event = parseNotified(headers);
+                    break;
+                case "PreparedEvent":
+                    event = parsePrepared(headers, content);
+                    break;
+                case "StartedEvent":
+                    event = parseStarted();
+                    break;
+                default:
+                    throw ("Unrecognized event: " + eventType);
+            }
+            if (_this.onEventCallback == null) {
+                _this.queuedEvents.push(event);
+            } else {
+                _this.onEventCallback(event);
+            }
+        });
+};
+
+/**
+ * Disconnects from the K3poDriver
+ * @param callback
+ */
+K3poControl.prototype.disconnect = function (callback) {
+    this.connection.disconnect(callback);
 };
 
 var k3poControl = exports;

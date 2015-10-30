@@ -41,11 +41,11 @@ ControlTransportApi.prototype.flush = function (callback) {
 };
 
 /**
- * Returns a string buffer.
- * @param callback (will be called with callback(data))
+ * callback to be called when there is a message or data
+ * @param callback
  */
-ControlTransportApi.prototype.read = function (callback) {
-    throw "read(callback) Not Implemented";
+ControlTransportApi.prototype.onMessage = function (callback) {
+    throw "onMessage(callback) Not Implemented";
 };
 
 exports.ControlTransportApi = ControlTransportApi;

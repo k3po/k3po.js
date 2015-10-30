@@ -9,13 +9,23 @@ var controlTransportFactory = require('../src/base/ControlTransportFactory.js');
  */
 function TcpTransport() {
     ControlTransportApi.call(this);
+    this.queuedMessages = [];
+    this.onDataCallback = null;
 }
 
 TcpTransport.prototype = Object.create(ControlTransportApi.prototype);
 
 TcpTransport.prototype.constructor = TcpTransport;
 
-TcpTransport.prototype.connect = function (url, onData, callback) {
+TcpTransport.prototype._onMessage = function (data) {
+    if (this.onDataCallback == null) {
+        this.queuedMessages.push(data);
+    } else {
+        this.onDataCallback(data);
+    }
+};
+
+TcpTransport.prototype.connect = function (url, callback) {
     url = url.replace("tcp://", "");
     var portIndex = url.indexOf(":");
     this.host = url.substr(0, portIndex);
@@ -23,18 +33,20 @@ TcpTransport.prototype.connect = function (url, onData, callback) {
     this.session = net.connect({port: this.port, host: this.host}, callback);
 
     var _this = this;
-    _this.onData = onData;
     this.session.on('data', function (data) {
-        _this.onData(data.toString());
+        _this._onMessage(data.toString());
     });
 };
 
-TcpTransport.prototype.write = function (msg, callback){
+TcpTransport.prototype.write = function (msg, callback) {
     this.session.write(msg, callback);
 };
 
-TcpTransport.prototype.read = function(callback){
-
+TcpTransport.prototype.onMessage = function (callback) {
+    this.onDataCallback = callback;
+    while (this.queuedMessages.length > 0) {
+        this.onDataCallback(this.queuedMessages.shift());
+    }
 };
 
 /**
@@ -54,4 +66,4 @@ TcpTransportFactory.prototype.connect = function (url, callback) {
     tcpTransport.connect(url, callback);
 };
 
-controlTransportFactory.registerTransportFactorySpi(new TestTransportFactory());
+controlTransportFactory.registerTransportFactorySpi(new TcpTransportFactory());

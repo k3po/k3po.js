@@ -69,6 +69,7 @@ describe("K3poControl", function () {
         var url = "test://localhost.com";
 
         mock.expects("connect").once().withArgs(url, done).callsArg(1);
+        mock.expects("onMessage").once();
 
         control.connect(url, done);
 
@@ -85,11 +86,11 @@ describe("K3poControl", function () {
             "\n" + description;
 
         mock.expects("connect").once().returns(mock);
-        mock.expects("read").once().callsArgWith(0, errorEvent);
+        mock.expects("onMessage").once().callsArgWith(0, errorEvent);
 
         control.connect(url, function () {
         });
-        control.readEvent(function (event) {
+        control.onEvent(function (event) {
             assert.equal(event.getType(), "ERROR");
             assert.equal(event.getDescription(), description);
             assert.equal(event.getSummary(), summary);
@@ -120,6 +121,7 @@ describe("K3poControl", function () {
         var abortCommand = new AbortCommand();
 
         mock.expects("connect").once().returns(mock);
+        mock.expects("onMessage").once();
         mock.expects("write").once().withArgs("ABORT\n\n");
         mock.expects("flush").once().callsArg(0);
 
