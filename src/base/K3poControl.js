@@ -207,7 +207,7 @@ StartedEvent.prototype.constructor = StartedEvent;
  * @constructor
  */
 function K3poControl() {
-
+    this.connection = null;
 }
 
 /**
@@ -215,7 +215,7 @@ function K3poControl() {
  * @param callback
  */
 K3poControl.prototype.connect = function (connectURL, callback) {
-    controlTransportFactory.connect(connectURL, callback);
+    this.connection = controlTransportFactory.connect(connectURL, callback);
 };
 
 /**
@@ -227,43 +227,45 @@ K3poControl.prototype.disconnect = function (callback) {
 };
 
 /**
- * Writes a Command to the K3poDriver
+ * Sends a Command to the K3poDriver
  * @param cmd
  * @param callback
  */
-K3poControl.prototype.writeCommand = function (cmd, callback) {
+K3poControl.prototype.sendCommand = function (cmd, callback) {
     if (cmd instanceof Command) {
+        var buf = "";
         switch (cmd.getType()) {
             case "ABORT":
-                this.connection.write("ABORT\n");
-                this.connection.write("barrier" + cmd.getBarrier() + "\n");
-                this.connection.write("\n");
+                buf += "ABORT\n";
+                buf += "\n";
                 break;
             case "AWAIT":
-                this.connection.write("AWAIT\n");
-                this.connection.write("\n");
+                buf += "AWAIT\n";
+                buf +="barrier" + cmd.getBarrier() + "\n";
+                buf += "\n";
                 break;
             case "NOTIFY":
-                this.connection.write("NOTIFY\n");
-                this.connection.write("barrier" + cmd.getBarrier() + "\n");
-                this.connection.write("\n");
+                buf += "NOTIFY\n";
+                buf += "barrier" + cmd.getBarrier() + "\n";
+                buf += "\n";
                 break;
             case "PREPARE":
-                this.connection.write("PREPARE\n");
-                this.connection.write("version:2.0\n");
+                buf += "PREPARE\n";
+                buf += "version:2.0\n";
                 var scripts = cmd.getScripts();
                 for (var i = 0; i < scripts.length; i++) {
-                    this.connection.write("name:" + scripts[i] + "\n");
+                    buf += "name:" + scripts[i] + "\n";
                 }
-                this.connection.write("\n");
+                buf += "\n";
                 break;
             case "START":
-                this.connection.write("START\n");
-                this.connection.write("\n");
+                buf += "START\n";
+                buf += "\n";
                 break;
             default:
                 throw ("Unrecognized cmd: " + cmd.getType());
         }
+        this.connection.write(buf);
         this.connection.flush(callback);
     } else {
         throw "Invalid Argument, cmd must be instance of Command";
@@ -287,9 +289,11 @@ K3poControl.prototype.readEvent = function (callback) {
         function parseHeaders(headers) {
             var result = {};
             headers = headers.split("\n");
-            for (var i = 0; i < headers; i++) {
+            for (var i = 0; i < headers.length; i++) {
                 var r = headers[i].split(":");
-                result[r[0]] = r[1];
+                var key = r[0];
+                var value = r[1];
+                result[key] = value;
             }
             return result;
         }
@@ -351,7 +355,13 @@ K3poControl.prototype.readEvent = function (callback) {
         callback(event);
     }
 
-    this.connection.readEvent(parseEvent);
+    this.connection.read(parseEvent);
 };
 
-module.exports = K3poControl;
+var k3poControl = exports;
+k3poControl.K3poControl = K3poControl;
+k3poControl.AbortCommand = AbortCommand;
+k3poControl.AwaitCommand = AwaitCommand;
+k3poControl.PrepareCommand = PrepareCommand;
+k3poControl.StartCommand = StartCommand;
+// Don't think there is a need to exports events because only K3poControl Constructs them
