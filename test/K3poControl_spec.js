@@ -23,15 +23,11 @@ function TestTransport() {
 }
 TestTransport.prototype = Object.create(ControlTransportApi.prototype);
 
-TestTransport.prototype.constructor = ControlTransportApi;
+TestTransport.prototype.constructor = TestTransport;
 
 
 TestTransport.prototype.connect = function (callback) {
     callback();
-};
-
-TestTransport.prototype.setUrl = function (url) {
-    this.url = url;
 };
 
 function TestTransportFactory() {
