@@ -215,12 +215,12 @@ K3poControl.prototype.sendCommand = function (cmd, callback) {
                 break;
             case "AWAIT":
                 buf += "AWAIT\n";
-                buf += "barrier" + cmd.getBarrier() + "\n";
+                buf += "barrier:" + cmd.getBarrier() + "\n";
                 buf += "\n";
                 break;
             case "NOTIFY":
                 buf += "NOTIFY\n";
-                buf += "barrier" + cmd.getBarrier() + "\n";
+                buf += "barrier:" + cmd.getBarrier() + "\n";
                 buf += "\n";
                 break;
             case "PREPARE":
@@ -269,59 +269,65 @@ function K3poControl() {
     this.onEventCallback = null;
 }
 
-function parseHeaders(headers) {
-    var result = {};
-    headers = headers.split("\n");
-    for (var i = 0; i < headers.length; i++) {
-        var r = headers[i].split(":");
-        var key = r[0];
-        var value = r[1];
-        result[key] = value;
-    }
-    return result;
-}
-
-function parseError(headers, content) {
-    headers = parseHeaders(headers);
-    var summary = headers["summary"];
-    var contentLength = headers["content-length"];
-    if (parseInt(contentLength) === content.length) {
-        return new ErrorEvent(summary, content);
-    } else {
-        throw "TODO, error reading Error event, need to handle dynamic buffers in transport";
-    }
-}
-
-function parseFinished(headers, content) {
-    headers = parseHeaders(headers);
-    var contentLength = headers["content-length"];
-    if (parseInt(contentLength) === content.length) {
-        return new FinishedEvent(content);
-    } else {
-        throw "TODO, error reading Finished event, need to handle dynamic buffers in transport";
-    }
-}
-
-function parseNotified(headers) {
-    headers = parseHeaders(headers);
-    var barrier = headers["barrier"];
-    return new NotifiedEvent(barrier);
-}
-
-function parsePrepared(headers, content) {
-    // TODO
-}
-
-function parseStarted() {
-    return new StartedEvent()
-}
-
 /**
  * Connects to the K3po Server
  * @param callback
  */
 K3poControl.prototype.connect = function (connectURL, callback) {
     this.connection = controlTransportFactory.connect(connectURL, callback);
+
+    function parseHeaders(headers) {
+        var result = {};
+        headers = headers.split("\n");
+        for (var i = 0; i < headers.length; i++) {
+            var r = headers[i].split(":");
+            var key = r[0];
+            var value = r[1];
+            result[key] = value;
+        }
+        return result;
+    }
+
+    function parseError(headers, content) {
+        headers = parseHeaders(headers);
+        var summary = headers["summary"];
+        var contentLength = headers["content-length"];
+        if (parseInt(contentLength) === content.length) {
+            return new ErrorEvent(summary, content);
+        } else {
+            throw "TODO, error reading Error event, need to handle dynamic buffers from transport";
+        }
+    }
+
+    function parseFinished(headers, content) {
+        headers = parseHeaders(headers);
+        var contentLength = headers["content-length"];
+        if (parseInt(contentLength) === content.length) {
+            return new FinishedEvent(content);
+        } else {
+            throw "TODO, error reading Finished event, need to handle dynamic buffers from transport";
+        }
+    }
+
+    function parseNotified(headers) {
+        headers = parseHeaders(headers);
+        var barrier = headers["barrier"];
+        return new NotifiedEvent(barrier);
+    }
+
+    function parsePrepared(headers, content) {
+        headers = parseHeaders(headers);
+        var contentLength = headers["content-length"];
+        if (parseInt(contentLength) === content.length) {
+            return new PreparedEvent(content);
+        } else {
+            throw "TODO, error reading Finished event, need to handle dynamic buffers from transport";
+        }
+    }
+
+    function parseStarted() {
+        return new StartedEvent()
+    }
 
     var _this = this;
 
@@ -345,10 +351,10 @@ K3poControl.prototype.connect = function (connectURL, callback) {
                 case "NOTIFIED":
                     event = parseNotified(headers);
                     break;
-                case "PreparedEvent":
+                case "PREPARED":
                     event = parsePrepared(headers, content);
                     break;
-                case "StartedEvent":
+                case "STARTED":
                     event = parseStarted();
                     break;
                 default:
@@ -374,6 +380,7 @@ var k3poControl = exports;
 k3poControl.K3poControl = K3poControl;
 k3poControl.AbortCommand = AbortCommand;
 k3poControl.AwaitCommand = AwaitCommand;
+k3poControl.NotifyCommand = NotifyCommand;
 k3poControl.PrepareCommand = PrepareCommand;
 k3poControl.StartCommand = StartCommand;
 // Don't think there is a need to exports events because only K3poControl Constructs them
