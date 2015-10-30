@@ -70,13 +70,24 @@ module.exports = function (grunt) {
         },
 
         mochaTest: {
-            test: {
+            testBase: {
                 options: {
                     reporter: 'spec',
+                    require: 'src/testFrameworks/mocha-k3po.js',
                     //captureFile : "tobedecided.txt"
                     quiet:false
                 },
-                src: ['test/**/*spec.js']
+                src: ['test/base/*spec.js']
+            },
+            testMochaK3po: {
+                options: {
+                    reporter: 'spec',
+                    ui: 'example-ui',
+                    require: 'src/testFrameworks/mocha-k3po.js',
+                    //captureFile : "tobedecided.txt"
+                    quiet:false
+                },
+                src: ['test/testFrameworks/mocha-k3po*.js']
             }
         },
 

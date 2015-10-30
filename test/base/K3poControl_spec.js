@@ -1,15 +1,15 @@
 'use strict';
 
-var k3poControl = require('../src/base/K3poControl.js'),
+var k3poControl = require('../../src/base/K3poControl.js'),
     K3poControl = k3poControl.K3poControl,
     AbortCommand = k3poControl.AbortCommand,
     AwaitCommand = k3poControl.AwaitCommand,
     NotifyCommand = k3poControl.NotifyCommand,
     PrepareCommand = k3poControl.PrepareCommand,
     StartCommand = k3poControl.StartCommand;
-var ControlTransportApi = require('../src/base/ControlTransportApi.js').ControlTransportApi;
-var ControlTransportFactorySpi = require('../src/base/ControlTransportFactorySpi.js').ControlTransportFactorySpi;
-var controlTransportFactory = require('../src/base/ControlTransportFactory.js');
+var ControlTransportApi = require('../../src/base/ControlTransportApi.js').ControlTransportApi;
+var ControlTransportFactorySpi = require('../../src/base/ControlTransportFactorySpi.js').ControlTransportFactorySpi;
+var controlTransportFactory = require('../../src/base/ControlTransportFactory.js');
 var sinon = require('sinon');
 var assert = require('assert');
 
