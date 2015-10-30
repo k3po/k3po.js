@@ -1,9 +1,9 @@
 describe('Example', function () {
-    test('passing test', function () {
+    it('passing test', function () {
         // Pass
     });
 
-    test('failing test', function () {
+    it('failing test', function () {
         throw new Error('it failed!');
     });
 });

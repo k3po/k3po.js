@@ -4,47 +4,40 @@ Suite = require('mocha/lib/suite'),
     escapeRe = require('escape-string-regexp');
 
 /**
- * This example is identical to the TDD interface, but with the addition of a
+ * This example is identical to the BDD interface, but with the addition of a
  * k3po functionality
  */
-module.exports = Mocha.interfaces['example-ui'] = function (suite) {
+module.exports = Mocha.interfaces['mocha-k3po'] = function (suite) {
     var suites = [suite];
 
     suite.on('pre-require', function (context, file, mocha) {
         var common = require('mocha/lib/interfaces/common')(suites, context);
 
-        /**
-         * Use all existing hook logic common to UIs. Common logic can be found in
-         * https://github.com/mochajs/mocha/blob/master/lib/interfaces/common.js
-         */
-        context.setup = common.beforeEach;
-        context.teardown = common.afterEach;
-        context.suiteSetup = common.before;
-        context.suiteTeardown = common.after;
+        context.before = common.before;
+        context.after = common.after;
+        context.beforeEach = common.beforeEach;
+        context.afterEach = common.afterEach;
         context.run = mocha.options.delay && common.runWithSuite(suite);
 
         /**
-         * The default TDD suite functionality. Describes a suite with the
-         * given title and callback, fn`, which may contain nested suites
+         * Describe a "suite" with the given `title`
+         * and callback `fn` containing nested suites
          * and/or tests.
          */
-        context.suite = function (title, fn) {
+        context.describe = context.context = function (title, fn) {
             var suite = Suite.create(suites[0], title);
-
             suite.file = file;
             suites.unshift(suite);
             fn.call(suite);
             suites.shift();
-
             return suite;
         };
 
         /**
-         * The default TDD pending suite functionality.
+         * Pending describe.
          */
-        context.suite.skip = function (title, fn) {
+        context.xdescribe = context.xcontext = context.describe.skip = function (title, fn) {
             var suite = Suite.create(suites[0], title);
-
             suite.pending = true;
             suites.unshift(suite);
             fn.call(suite);
@@ -52,43 +45,45 @@ module.exports = Mocha.interfaces['example-ui'] = function (suite) {
         };
 
         /**
-         * Default TDD exclusive test-case logic.
+         * Exclusive suite.
          */
-        context.suite.only = function (title, fn) {
-            var suite = context.suite(title, fn);
+        context.describe.only = function (title, fn) {
+            var suite = context.describe(title, fn);
             mocha.grep(suite.fullTitle());
+            return suite;
         };
 
         /**
-         * Default TDD test-case logic. Describes a specification or test-case
-         * with the given `title` and callback `fn` acting as a thunk.
+         * Describe a specification or test-case
+         * with the given `title` and callback `fn`
+         * acting as a thunk.
          */
-        context.test = function (title, fn) {
-            var suite, test;
-
-            suite = suites[0];
-            if (suite.pending) fn = null;
-            test = new Test(title, fn);
+        context.it = context.specify = function (title, fn) {
+            var suite = suites[0];
+            if (suite.pending) {
+                fn = null;
+            }
+            var test = new Test(title, fn);
             test.file = file;
             suite.addTest(test);
-
             return test;
         };
 
         /**
          * Exclusive test-case.
          */
-        context.test.only = function (title, fn) {
-            var test, reString;
-
-            test = context.test(title, fn);
-            reString = '^' + escapeRe(test.fullTitle()) + '$';
+        context.it.only = function (title, fn) {
+            var test = context.it(title, fn);
+            var reString = '^' + escapeRe(test.fullTitle()) + '$';
             mocha.grep(new RegExp(reString));
+            return test;
         };
 
         /**
-         * Defines the skip behavior for a test.
+         * Pending test case.
          */
-        context.test.skip = common.test.skip;
+        context.xit = context.xspecify = context.it.skip = function (title) {
+            context.it(title);
+        };
     });
 };
