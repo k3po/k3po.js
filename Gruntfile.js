@@ -85,7 +85,8 @@ module.exports = function (grunt) {
                     ui: 'mocha-k3po',
                     require: 'src/testFrameworks/mocha-k3po.js',
                     //captureFile : "tobedecided.txt"
-                    quiet:false
+                    quiet:false,
+                    hmm:"what"
                 },
                 src: ['test/testFrameworks/mocha-k3po*.js']
             }

@@ -71,7 +71,7 @@ NotifyCommand.prototype.getBarrier = function () {
 function PrepareCommand(scripts) {
     Command.call(this, "PREPARE");
 
-    if (scripts.constructor === Array) {
+    if (scripts != null && scripts.constructor === Array) {
         this.scripts = scripts;
     } else {
         throw "Invalid argument, scripts is not an Array";
@@ -246,7 +246,7 @@ K3poControl.prototype.sendCommand = function (cmd, callback) {
     }
 };
 
-K3poControl.prototype.on = function (event, listener){
+K3poControl.prototype.on = function (event, listener) {
     switch (event) {
         case "ERROR":
         case "FINISHED":
@@ -259,9 +259,9 @@ K3poControl.prototype.on = function (event, listener){
         default:
             throw ("Unrecognized event to register too: " + event);
     }
-    for(var i = 0; i < this.queuedEvents.length; i ++){
+    for (var i = 0; i < this.queuedEvents.length; i++) {
         var e = this.queuedEvents[i];
-        if(e.getType() === event){
+        if (e.getType() === event) {
             listener(e);
             this.queuedEvents.splice(i, 1);
         }
@@ -287,6 +287,9 @@ function K3poControl() {
  */
 K3poControl.prototype.connect = function (connectURL, callback) {
     this.connection = controlTransportFactory.connect(connectURL, callback);
+    if (this.connection == null) {
+        throw "K3poControl could not connect";
+    }
 
     function parseHeaders(headers) {
         var result = {};

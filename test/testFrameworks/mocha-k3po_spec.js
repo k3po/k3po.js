@@ -1,9 +1,16 @@
-describe('Example', function () {
-    it('passing test', function () {
-        // Pass
+require("../../src/node/TcpTransportFactory.js");
+
+describe('TcpServer', function () {
+    it('should.accept', function (done) {
+        k3poStart();
+
+        k3poFinish();
+        done();
     });
 
-    it('failing test', function () {
-        throw new Error('it failed!');
+    it('should.accept.and.send.data', function (done) {
+        k3poFinish();
+        done();
     });
+
 });

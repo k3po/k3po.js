@@ -1,7 +1,7 @@
 var net = require('net');
-var ControlTransportApi = require('../src/base/ControlTransportApi.js').ControlTransportApi;
-var ControlTransportFactorySpi = require('../src/base/ControlTransportFactorySpi.js').ControlTransportFactorySpi;
-var controlTransportFactory = require('../src/base/ControlTransportFactory.js');
+var ControlTransportApi = require('../base/ControlTransportApi.js').ControlTransportApi;
+var ControlTransportFactorySpi = require('../base/ControlTransportFactorySpi.js').ControlTransportFactorySpi;
+var controlTransportFactory = require('../base/ControlTransportFactory.js');
 
 /**
  * K3po Control Transport for when running in node
@@ -42,6 +42,10 @@ TcpTransport.prototype.write = function (msg, callback) {
     this.session.write(msg, callback);
 };
 
+TcpTransport.prototype.flush = function (callback) {
+    // NOOP
+};
+
 TcpTransport.prototype.onMessage = function (callback) {
     this.onDataCallback = callback;
     while (this.queuedMessages.length > 0) {
@@ -64,6 +68,7 @@ TcpTransportFactory.prototype.constructor = TcpTransportFactory;
 TcpTransportFactory.prototype.connect = function (url, callback) {
     var tcpTransport = new TcpTransport();
     tcpTransport.connect(url, callback);
+    return tcpTransport;
 };
 
 controlTransportFactory.registerTransportFactorySpi(new TcpTransportFactory());
