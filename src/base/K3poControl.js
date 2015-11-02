@@ -376,6 +376,7 @@ K3poControl.prototype.connect = function (connectURL, callback) {
                     throw ("Unrecognized event: " + eventType);
             }
             if (_this.eventCallbacks[eventType] == null) {
+                console.log(event);
                 _this.queuedEvents.push(event);
             } else {
                 _this.eventCallbacks[eventType](event);

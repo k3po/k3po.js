@@ -6,52 +6,47 @@ var k3poControl = require('../../src/base/K3poControl.js'),
     PrepareCommand = k3poControl.PrepareCommand,
     StartCommand = k3poControl.StartCommand;
 
-function K3poRunner(k3poControl) {
+function K3poRunner(k3poControl, done) {
     this.state = "INITIAL"; // INITIAL, START, STARTED
     this.k3poControl = k3poControl;
     this.scriptRoot = null;
-    this.eventListeners = [];
+    this.done = done;
+    this.actual = "";
+    this.expected = null;
+    var _this = this;
+    _this.errorSummary = null;
+    _this.errorDescription = null;
+    k3poControl.on('ERROR', function (event) {
+        _this.state = "ERROR";
+        _this.errorSummary = event.getSummary();
+        _this.errorDescription = event.getDescription();
+        done();
+    });
+    k3poControl.on('FINISHED', function (event) {
+        _this.state = "FINISHED";
+        _this.actual = event.getScript();
+        done();
+    });
 }
+
+K3poRunner.prototype.getErrorSummary = function(){
+    return this.errorSummary;
+};
+
+K3poRunner.prototype.getErrorDescription = function(){
+    return this.errorDescription;
+};
 
 K3poRunner.prototype.setScriptRoot = function (root) {
     this.scriptRoot = root;
 };
 
-
-K3poRunner.prototype.handlePrepared = function (callback) {
-    switch (this.state) {
-        case "PREPARE":
-            this.state = "PREPARED";
-            callback();
-            break;
-        default:
-            throw "Can not call handlePrepared from state: " + this.state;
-    }
+K3poRunner.prototype.getExpected = function () {
+    return this.expected;
 };
 
-K3poRunner.prototype.on = function (event, callback) {
-    var registeredListiners = this.eventListeners[event];
-    if (!registeredListiners) {
-        registeredListiners = [];
-    }
-    registeredListiners.push(callback);
-};
-
-K3poRunner.prototype._setUpStateListeners = function () {
-    this.on("PREPARED", function () {
-        if (_this.state === "PREPARE") {
-            _this.state === "PREPARED";
-        } else {
-            throw "Trying to switch to state PREPARED from " + _this.state;
-        }
-    });
-    this.on("STARTED", function () {
-        if (_this.state === "START") {
-            _this.state === "STARTED";
-        } else {
-            throw "Trying to switch to state STARTED from " + _this.state;
-        }
-    });
+K3poRunner.prototype.getActual = function () {
+    return this.actual;
 };
 
 K3poRunner.prototype.prepare = function (scripts, callback) {
@@ -60,15 +55,17 @@ K3poRunner.prototype.prepare = function (scripts, callback) {
             // hmm maybe control protocol should be aware of script root
             scripts[i] = this.scriptRoot + "/" + scripts[i];
         }
-
     }
 
     var cmd = new PrepareCommand(scripts);
     switch (this.state) {
         case "INITIAL":
-            this._setUpStateListeners();
-            this.on("PREPARED", callback);
             var _this = this;
+            this.k3poControl.on("PREPARED", function (preparedEvent) {
+                _this.expected = preparedEvent.getScript();
+                _this.state = "PREPARED";
+                callback();
+            });
             this.k3poControl.sendCommand(cmd, function () {
                 _this.state = "PREPARE";
             });
@@ -81,13 +78,36 @@ K3poRunner.prototype.prepare = function (scripts, callback) {
 K3poRunner.prototype.start = function (callback) {
     if (this.state === "PREPARED") {
         var _this = this;
-        this.on("START", callback);
-        this.k3poControl.sendCommand(cmd, function () {
-            _this.state = "START";
+        var cmd = new StartCommand();
+        this.k3poControl.on("STARTED", function () {
+            _this.state = "STARTED";
+            if (callback) {
+                callback();
+            }
         });
+        _this.state = "START";
+        this.startCallbacks = [];
+        this.startCallbacks.push(callback);
+        this.k3poControl.sendCommand(cmd, function () {
+            for (var i = 0; i < _this.startCallbacks.length; i++) {
+                if (_this.startCallbacks[i]) {
+                    _this.startCallbacks[i]();
+                }
+            }
+        });
+    } else if (this.state === "START") {
+        this.startCallbacks.push(callback);
     } else {
-        throw "Cant call start for state: " + this.state;
+        callback();
     }
+};
+
+K3poRunner.prototype.dispose = function(){
+   this.k3poControl.disconnect();
+};
+
+K3poRunner.prototype.getState = function(){
+    return this.state;
 };
 
 module.exports = K3poRunner;
