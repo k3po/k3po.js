@@ -121,5 +121,5 @@ module.exports = function (grunt) {
 
     // DPW - This does not work currently becuase of bugs stopping the robot, and stopping nodeunit
     // grunt.registerTask('default', ['jshint', 'clean', 'k3po:start', 'connect', 'nodeunit', 'mochaTest', 'k3po:stop']);
-    grunt.registerTask('default', ['jshint', 'clean', 'mochaTest:testBase', 'k3po:start', 'mochaTest:testMochaK3po']);
+    grunt.registerTask('default', ['jshint', 'clean', 'k3po:start', 'mochaTest:testMochaK3po']);
 };

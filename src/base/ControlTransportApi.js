@@ -44,8 +44,12 @@ ControlTransportApi.prototype.flush = function (callback) {
  * callback to be called when there is a message or data
  * @param callback
  */
-ControlTransportApi.prototype.onMessage = function (callback) {
-    throw "onMessage(callback) Not Implemented";
+ControlTransportApi.prototype.on = function (event, listener) {
+    throw "on(event, listener) Not Implemented";
 };
+ControlTransportApi.prototype.addEventListener = ControlTransportApi.prototype.on;
+//ControlTransportApi.prototype.onMessage = function (callback) {
+//    throw "onMessage(callback) Not Implemented";
+//};
 
 exports.ControlTransportApi = ControlTransportApi;

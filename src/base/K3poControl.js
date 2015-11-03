@@ -346,7 +346,7 @@ K3poControl.prototype.connect = function (connectURL, callback) {
 
     var _this = this;
 
-    this.connection.onMessage(
+    this.connection.on(
         function (message) {
             var eventTypeTerminator = message.indexOf("\n");
             var headerTerminator = message.indexOf("\n\n");

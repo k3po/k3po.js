@@ -10,7 +10,9 @@ var controlTransportFactory = require('../base/ControlTransportFactory.js');
 function TcpTransport() {
     ControlTransportApi.call(this);
     this.queuedMessages = [];
+    this.queuedEvents = [];
     this.onDataCallback = null;
+    this.eventCallbacks = [];
 }
 
 TcpTransport.prototype = Object.create(ControlTransportApi.prototype);
@@ -48,12 +50,31 @@ TcpTransport.prototype.flush = function (callback) {
     // NOOP
 };
 
-TcpTransport.prototype.onMessage = function (callback) {
-    this.onDataCallback = callback;
+TcpTransport.prototype.on = function(event, listener){
+console.log(event.toString());
+
+    this.eventCallbacks[event] = listener;
+
     while (this.queuedMessages.length > 0) {
-        this.onDataCallback(this.queuedMessages.shift());
+        this.eventCallbacks(this.queuedMessages.shift());
     }
+//    for(var i = 0; i < this.queuedEvents.length; i ++){
+//        var e = this.queuedEvents[i];
+//        if(e.getType() === event){
+//            listener(e);
+//            this.queuedEvents.splice(i, 1);
+//        }
+//    }
 };
+
+//TcpTransport.prototype.addEventListener = TcpTransport.prototype.on;
+
+//TcpTransport.prototype.onMessage = function (callback) {
+//    this.onDataCallback = callback;
+//    while (this.queuedMessages.length > 0) {
+//        this.onDataCallback(this.queuedMessages.shift());
+//    }
+//};
 
 TcpTransport.prototype.disconnect = function(callback){
     this.session.end();
