@@ -78,13 +78,13 @@ module.exports = Mocha.interfaces['mocha-k3po'] = function (suite) {
                 k3poControl.connect("tcp://localhost:11642", function () {
                     k3poRunner = new K3poRunner(k3poControl, function () {
                         var state = k3poRunner.getState();
-                        if(state === "ERROR"){
-                            assert.fail(k3poRunner.getErrorSummary() + ": " +k3poRunner.getErrorDescription());
-                        }else if(state != "FINISHED"){
+                        if (state === "ERROR") {
+                            assert.fail(k3poRunner.getErrorSummary() + ": " + k3poRunner.getErrorDescription());
+                        } else if (state != "FINISHED") {
 
                         }
                         assert.equal(k3poRunner.getExpected(), k3poRunner.getActual());
-                        while(postRun.length > 0){
+                        while (postRun.length > 0) {
                             postRun.pop()();
                         }
                     });
@@ -112,5 +112,13 @@ module.exports = Mocha.interfaces['mocha-k3po'] = function (suite) {
             suite.addTest(test);
             return test;
         };
+
+        context.notifyBarrier = function (barrierName) {
+            k3poRunner.notifyBarrier(barrierName);
+        };
+
+        context.awaitBarrier = function (barrierName, callback) {
+            k3poRunner.awaitBarrier(barrierName, callback);
+        }
     });
 };

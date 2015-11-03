@@ -110,4 +110,22 @@ K3poRunner.prototype.getState = function(){
     return this.state;
 };
 
+K3poRunner.prototype.notifyBarrier = function(barrier){
+    var cmd = new NotifyCommand(barrier);
+    this.k3poControl.sendCommand(cmd ,function(){
+
+    });
+};
+
+K3poRunner.prototype.awaitBarrier = function(barrier, callback){
+    var cmd = new AwaitCommand(barrier);
+    this.k3poControl.on("NOTIFIED", function(event){
+        if(event.getBarrier() === barrier){
+            callback();
+        }
+    });
+    this.k3poControl.sendCommand(cmd, function(){
+
+    });
+};
 module.exports = K3poRunner;
