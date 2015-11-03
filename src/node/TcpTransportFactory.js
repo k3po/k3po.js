@@ -30,12 +30,14 @@ TcpTransport.prototype.connect = function (url, callback) {
     var portIndex = url.indexOf(":");
     this.host = url.substr(0, portIndex);
     this.port = url.substr(portIndex + 1);
-    this.session = net.connect({port: this.port, host: this.host}, callback);
-
     var _this = this;
-    this.session.on('data', function (data) {
-        _this._onMessage(data.toString());
-    });
+    var callback2 = function(){
+        _this.session.on('data', function (data) {
+            _this._onMessage(data.toString());
+        });
+        callback();
+    };
+    this.session = net.connect({port: this.port, host: this.host}, callback2);
 };
 
 TcpTransport.prototype.write = function (msg, callback) {
@@ -51,6 +53,10 @@ TcpTransport.prototype.onMessage = function (callback) {
     while (this.queuedMessages.length > 0) {
         this.onDataCallback(this.queuedMessages.shift());
     }
+};
+
+TcpTransport.prototype.disconnect = function(callback){
+    this.session.end();
 };
 
 /**
