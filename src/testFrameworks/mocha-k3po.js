@@ -30,6 +30,7 @@ module.exports = Mocha.interfaces['mocha-k3po'] = function (suite) {
         var k3poRunner;
         var scriptRoot;
         var postRun = [];
+        var k3poFinishedClean = false;
 
         context.setScriptRoot = function (root) {
             scriptRoot = root;
@@ -79,11 +80,17 @@ module.exports = Mocha.interfaces['mocha-k3po'] = function (suite) {
                     k3poRunner = new K3poRunner(k3poControl, function () {
                         var state = k3poRunner.getState();
                         if (state === "ERROR") {
-                            assert.fail(k3poRunner.getErrorSummary() + ": " + k3poRunner.getErrorDescription());
-                        } else if (state != "FINISHED") {
-
+                            assert.ifError(k3poRunner.getErrorSummary() + ": " + k3poRunner.getErrorDescription() + "!");
+                            k3poFinishedClean = true;
+                        } else if (state === "FINISHED") {
+                            assert.equal(k3poRunner.getExpected(), k3poRunner.getActual());
+                            k3poFinishedClean = true;
+                        } else {
+                            // AFAIK, there is no hook into the timeout to send abort, so we will send abort here,
+                            // and check script diff at end
+                            k3poRunner.abort();
+                            k3poFinishedClean = false;
                         }
-                        assert.equal(k3poRunner.getExpected(), k3poRunner.getActual());
                         while (postRun.length > 0) {
                             postRun.pop()();
                         }
@@ -99,8 +106,21 @@ module.exports = Mocha.interfaces['mocha-k3po'] = function (suite) {
                     });
                 });
             };
+
             after(title, function () {
-                k3poRunner.dispose();
+                if (k3poFinishedClean) {
+                    k3poRunner.dispose();
+                } else if (k3poRunner.getState() === "FINISHED") {
+                    assert.equal(k3poRunner.getExpected(), k3poRunner.getActual());
+                    k3poRunner.dispose();
+                } else {
+                    k3poRunner.abort(function () {
+                        setTimeout(function () {
+                            k3poRunner.dispose();
+                            assert.equal(k3poRunner.getExpected(), k3poRunner.getActual());
+                        });
+                    });
+                }
             });
             scripts = title;
             var suite = suites[0];

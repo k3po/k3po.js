@@ -29,11 +29,11 @@ function K3poRunner(k3poControl, done) {
     });
 }
 
-K3poRunner.prototype.getErrorSummary = function(){
+K3poRunner.prototype.getErrorSummary = function () {
     return this.errorSummary;
 };
 
-K3poRunner.prototype.getErrorDescription = function(){
+K3poRunner.prototype.getErrorDescription = function () {
     return this.errorDescription;
 };
 
@@ -79,12 +79,6 @@ K3poRunner.prototype.start = function (callback) {
     if (this.state === "PREPARED") {
         var _this = this;
         var cmd = new StartCommand();
-        this.k3poControl.on("STARTED", function () {
-            _this.state = "STARTED";
-            if (callback) {
-                callback();
-            }
-        });
         _this.state = "START";
         this.startCallbacks = [];
         this.startCallbacks.push(callback);
@@ -98,33 +92,45 @@ K3poRunner.prototype.start = function (callback) {
     } else if (this.state === "START") {
         this.startCallbacks.push(callback);
     } else {
-        callback();
+        if (callback) {
+            callback();
+        }
     }
 };
 
-K3poRunner.prototype.dispose = function(){
-   this.k3poControl.disconnect();
+K3poRunner.prototype.abort = function(callback){
+    if(!callback){
+        callback = function(){
+
+        };
+    }
+    var cmd = new AbortCommand();
+    this.k3poControl.sendCommand(cmd, callback);
 };
 
-K3poRunner.prototype.getState = function(){
+K3poRunner.prototype.dispose = function () {
+    this.k3poControl.disconnect();
+};
+
+K3poRunner.prototype.getState = function () {
     return this.state;
 };
 
-K3poRunner.prototype.notifyBarrier = function(barrier){
+K3poRunner.prototype.notifyBarrier = function (barrier) {
     var cmd = new NotifyCommand(barrier);
-    this.k3poControl.sendCommand(cmd ,function(){
+    this.k3poControl.sendCommand(cmd, function () {
 
     });
 };
 
-K3poRunner.prototype.awaitBarrier = function(barrier, callback){
+K3poRunner.prototype.awaitBarrier = function (barrier, callback) {
     var cmd = new AwaitCommand(barrier);
-    this.k3poControl.on("NOTIFIED", function(event){
-        if(event.getBarrier() === barrier){
+    this.k3poControl.on("NOTIFIED", function (event) {
+        if (event.getBarrier() === barrier) {
             callback();
         }
     });
-    this.k3poControl.sendCommand(cmd, function(){
+    this.k3poControl.sendCommand(cmd, function () {
 
     });
 };
