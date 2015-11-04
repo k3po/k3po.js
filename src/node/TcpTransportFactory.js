@@ -20,10 +20,10 @@ TcpTransport.prototype = Object.create(ControlTransportApi.prototype);
 TcpTransport.prototype.constructor = TcpTransport;
 
 TcpTransport.prototype._onMessage = function (data) {
-    if (this.onDataCallback == null) {
+    if (this.eventCallbacks['data'] == null) {
         this.queuedMessages.push(data);
     } else {
-        this.onDataCallback(data);
+        this.eventCallbacks['data'](data);
     }
 };
 
@@ -51,30 +51,22 @@ TcpTransport.prototype.flush = function (callback) {
 };
 
 TcpTransport.prototype.on = function(event, listener){
-console.log(event.toString());
-
-    this.eventCallbacks[event] = listener;
-
-    while (this.queuedMessages.length > 0) {
-        this.eventCallbacks(this.queuedMessages.shift());
+    switch (event) {
+        case "data":
+            this.eventCallbacks[event] = listener;
+            break;
+        default:
+            throw ("Unrecognized event to register too: " + event);
     }
-//    for(var i = 0; i < this.queuedEvents.length; i ++){
-//        var e = this.queuedEvents[i];
-//        if(e.getType() === event){
-//            listener(e);
-//            this.queuedEvents.splice(i, 1);
-//        }
-//    }
+
+    for(var i = 0; i < this.queuedMessages.length; i ++){
+        var e = this.queuedMessages[i];
+        if(e.getType() === event){
+            listener(e);
+            this.queuedMessages.splice(i, 1);
+        }
+    }
 };
-
-//TcpTransport.prototype.addEventListener = TcpTransport.prototype.on;
-
-//TcpTransport.prototype.onMessage = function (callback) {
-//    this.onDataCallback = callback;
-//    while (this.queuedMessages.length > 0) {
-//        this.onDataCallback(this.queuedMessages.shift());
-//    }
-//};
 
 TcpTransport.prototype.disconnect = function(callback){
     this.session.end();
