@@ -101,8 +101,20 @@ module.exports = function (grunt) {
                     keepalive: false
                 }
             }
-        }
+        },
 
+        browserify: {
+            vendor: {
+                src: ["src/base/**/*.js", "scr/testFrameworks/**/*.js", "src/web/BboshTransportFactory.js"],
+                dest: 'public/k3po.js'
+                //options: {
+                //    require: ['jquery'],
+                //    alias: {
+                //        momentWrapper: './lib/moments.js'
+                //    }
+                //}
+            }
+        }
     });
 
     // These plugins provide necessary tasks.
@@ -113,13 +125,16 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-nodeunit');
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-contrib-connect');
-
+    grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-browserify');
     // DPW - Current working setup is running the following 3 tasks in two teminals
     grunt.registerTask('runRobot', ['k3po:daemon']);
     grunt.registerTask('startServer', ['connect']);
     grunt.registerTask('testBBosh', ['mochaTest']);
+    grunt.registerTask('browser', ['browserify']);
+    grunt.loadNpmTasks('grunt-contrib-concat');
 
     // DPW - This does not work currently becuase of bugs stopping the robot, and stopping nodeunit
     // grunt.registerTask('default', ['jshint', 'clean', 'k3po:start', 'connect', 'nodeunit', 'mochaTest', 'k3po:stop']);
-    grunt.registerTask('default', ['jshint', 'clean', 'mochaTest:testBase', 'k3po:start', 'mochaTest:testMochaK3po']);
+    grunt.registerTask('default', ['jshint', 'clean', 'mochaTest:testBase', 'k3po:start', 'mochaTest:testMochaK3po', 'browser']);
 };
