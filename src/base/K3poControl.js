@@ -346,14 +346,13 @@ K3poControl.prototype.connect = function (connectURL, callback) {
 
     var _this = this;
 
-    this.connection.on('data',
-        function (message) {
-            var eventTypeTerminator = message.indexOf("\n");
-            var headerTerminator = message.indexOf("\n\n");
-            var contentTerminator = message.length;
-            var eventType = message.substr(0, eventTypeTerminator);
-            var headers = message.substr(eventTypeTerminator + 1, headerTerminator);
-            var content = message.substr(headerTerminator + 2, contentTerminator);
+    this.connection.on('data', function (data) {
+            var eventTypeTerminator = data.indexOf("\n");
+            var headerTerminator = data.indexOf("\n\n");
+            var contentTerminator = data.length;
+            var eventType = data.substr(0, eventTypeTerminator);
+            var headers = data.substr(eventTypeTerminator + 1, headerTerminator);
+            var content = data.substr(headerTerminator + 2, contentTerminator);
             var event;
 
             switch (eventType) {

@@ -10,8 +10,6 @@ var controlTransportFactory = require('../base/ControlTransportFactory.js');
 function TcpTransport() {
     ControlTransportApi.call(this);
     this.queuedMessages = [];
-    this.queuedEvents = [];
-    this.onDataCallback = null;
     this.eventCallbacks = [];
 }
 
@@ -19,7 +17,7 @@ TcpTransport.prototype = Object.create(ControlTransportApi.prototype);
 
 TcpTransport.prototype.constructor = TcpTransport;
 
-TcpTransport.prototype._onMessage = function (data) {
+TcpTransport.prototype._on = function (data) {
     if (this.eventCallbacks['data'] == null) {
         this.queuedMessages.push(data);
     } else {
@@ -35,7 +33,7 @@ TcpTransport.prototype.connect = function (url, callback) {
     var _this = this;
     var callback2 = function(){
         _this.session.on('data', function (data) {
-            _this._onMessage(data.toString());
+            _this._on(data.toString());
         });
         callback();
     };
