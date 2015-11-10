@@ -31,5 +31,5 @@ node_modules
 # Operating systems
 .DS_Store
 
-# Browser build
-public
+# build
+build

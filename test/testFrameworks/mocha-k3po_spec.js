@@ -1,4 +1,4 @@
-require("../../src/node/TcpTransportFactory.js");
+require("../../lib/transports/TcpTransportFactory.js");
 var assert = require('assert');
 var net = require('net');
 

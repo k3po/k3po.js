@@ -28,20 +28,23 @@
   },
   "devDependencies": {
     "bower": "^1.3.8",
-    "grunt-browserify": "^4.0.1",
+    "escape-string-regexp": "1.0.2",
     "grunt": "^0.4.5",
+    "grunt-browserify": "^4.0.1",
     "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-connect": "^0.8.0",
     "grunt-contrib-jshint": "^0.11.2",
     "grunt-contrib-nodeunit": "^0.3.3",
     "grunt-k3po": "0.1.0",
     "grunt-mocha-test": "^0.12.2",
-    "grunt-webdriver": "^v0.4.4",
+    "grunt-webdriver": "^1.0.0",
     "mocha": "2.3.3",
     "promise": "^6.0.1",
     "sinon": "1.17.2 ",
-    "escape-string-regexp": "1.0.2",
-    "grunt-contrib-concat": "~0.3.0"
+    "grunt-webdriver": "1.0.0",
+    "webdriverio": "3.2.6",
+    "xhr": "2.0.5"
   },
   "dependencies": {
     "browserify": "^11.0.1",
@@ -54,17 +57,27 @@
     "grunt-k3po": "^0.1.0"
   },
   "java": {
-      "dependencies": [
-        {
-          "groupId": "org.kaazing",
-          "artifactId": "k3po.driver",
-          "version": "3.0.0-alpha-1"
-        },
-        {
-          "groupId": "org.kaazing",
-          "artifactId": "specification.k3po.control",
-          "version": "3.0.0-alpha-1"
-        }
+    "dependencies": [
+      {
+        "groupId": "org.kaazing",
+        "artifactId": "k3po.driver",
+        "version": "3.0.0-alpha-1"
+      },
+      {
+        "groupId": "org.kaazing",
+        "artifactId": "specification.ws",
+        "version": "3.0.0-alpha-1"
+      },
+      {
+        "groupId": "org.kaazing",
+        "artifactId": "specification.k3po.control",
+        "version": "3.0.0-alpha-1"
+      },
+      {
+        "groupId": "org.kaazing",
+        "artifactId": "specification.http",
+        "version": "3.0.0-alpha-1"
+      }
     ]
   }
 }
