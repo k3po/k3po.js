@@ -21,7 +21,6 @@ describe('TcpServer', function () {
         });
     });
 
-
     it('client.with.barriers', function () {
         var server = net.createServer(function(socket){
             awaitBarrier("NOTIFYING_BARRIER", function(){

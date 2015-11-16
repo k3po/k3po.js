@@ -15,8 +15,8 @@ module.exports = function (grunt) {
         jshint: {
             all: [
                 'Gruntfile.js',
-                'lib/**/*.js',
-                'test/**/*.js'
+                'test/**/*.js',
+                'lib/**/*.js'
             ],
             options: {
                 jshintrc: '.jshintrc'
@@ -53,8 +53,8 @@ module.exports = function (grunt) {
                 options: {
                     reporter: 'spec',
                     require: 'lib/testFrameworks/mocha-k3po.js',
-                    captureFile : "build/mochaTest.txt",
-                    quiet:false
+                    captureFile: "build/mochaTest.txt",
+                    quiet: false
                 },
                 src: ['test/base/*spec.js']
             },
@@ -63,10 +63,23 @@ module.exports = function (grunt) {
                     reporter: 'spec',
                     ui: 'mocha-k3po',
                     require: 'lib/testFrameworks/mocha-k3po.js',
-                    captureFile : "build/testMochaK3po.txt",
-                    quiet:false
+                    captureFile: "build/testMochaK3po.txt",
                 },
                 src: ['test/testFrameworks/mocha-k3po*.js']
+            },
+            testMochaK3poBrowserSupport: {
+                options: {
+                    reporter: 'spec',
+                    ui: 'mocha-k3po',
+                    require: 'lib/testFrameworks/mocha-k3po.js',
+                    captureFile: "build/testMochaK3po.txt",
+                    browser: {
+                        desiredCapabilities: {
+                            browserName: 'firefox'
+                        }
+                    }
+                },
+                src: ['test/testFrameworks/mocha-browser-k3po*.js']
             }
         },
 
@@ -88,5 +101,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-webdriver');
 
     // DPW - This does not work currently becuase of bugs stopping the robot, and stopping nodeunit
-    grunt.registerTask('default', ['clean', 'jshint',  'mochaTest:testBase', 'k3po:start', 'mochaTest:testMochaK3po']);
+    grunt.registerTask('default', ['clean', 'jshint', 'mochaTest:testBase', 'k3po:start', 'mochaTest:testMochaK3po', 'mochaTest:testMochaK3poBrowserSupport']);
+    //grunt.registerTask('default', ['clean', 'jshint', 'mochaTest:testBase', 'k3po:start', 'mochaTest:testMochaK3poBrowserSupport']);
 };
