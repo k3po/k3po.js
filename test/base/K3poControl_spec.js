@@ -1,6 +1,6 @@
 'use strict';
 
-var K3poControl = require('../../lib/K3poControl.js');
+var K3poControl = require('../../lib/Control.js');
 var AbortCommand = require('../../lib/commands/AbortCommand.js');
 var AwaitCommand = require('../../lib/commands/AwaitCommand.js');
 var NotifyCommand = require('../../lib/commands/NotifyCommand.js');
@@ -48,7 +48,7 @@ controlTransportFactory.registerTransportFactorySpi(new TestTransportFactory());
 /**
  * Tests
  */
-describe("K3poControl", function () {
+describe("Control", function () {
     var control;
     var mock;
 

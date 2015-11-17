@@ -4,7 +4,7 @@ var net = require('net');
 
 describe('TcpServer', function () {
     //
-    //setScriptRoot('org/kaazing/specification/ws/framing');
+    //scriptRoot('org/kaazing/specification/ws/framing');
     //
     //this.timeout(10000);
     //it('echo.text.payload.length.125/handshake.response.and.frame', function () {

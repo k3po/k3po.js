@@ -1,59 +1,37 @@
 require("../../lib/transports/TcpTransportFactory.js");
 var assert = require('assert');
 var net = require('net');
+var WebSocket = require('websocket').w3cwebsocket;
 
-describe('TcpServer', function () {
+describe('WsClient', function () {
 
-    setScriptRoot('org/kaazing/specification/control/assets');
+    var hmm = k3poConfig;
+    hmm.scriptRoot('org/kaazing/specification/ws/framing');//._url("tcp://localhost");
 
-    it('client', function () {
-        var server = net.createServer(function(socket){
-            socket.on('data', function(data){
-                assert.equal("echo", data.toString());
-                socket.write('echo');
-                socket.pipe(socket);
-                socket.destroy();
-            });
+    it('echo.text.payload.length.125/handshake.response.and.frame', function (done) {
+        //todo
+        var ws = new WebSocket("ws://localhost:8080/echo");
+        ws.onopen = function () {
+            ws.send("12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345");
+        };
+        ws.ondata = function () {
+            // TODO: verify echoed payload
+            ws.close();
+            done();
+        };
+        ws.onerror = done;
+
+        k3po.start().then(function () {
+
         });
-        server.listen(8000, '127.0.0.1', k3poStart);
-        k3poFinish(function(){
-            server.close();
-        });
-    });
-
-    it('client.with.barriers', function () {
-        var server = net.createServer(function(socket){
-            awaitBarrier("NOTIFYING_BARRIER", function(){
-                notifyBarrier("AWAITING_BARRIER");
-            });
-            socket.on('data', function(data){
-                assert.equal("echo", data.toString());
-                socket.write('echo');
-                socket.pipe(socket);
-                socket.destroy();
-            });
-        });
-        server.listen(8000, '127.0.0.1');
-        k3poFinish(function(){
-            server.close();
+        //k3po.await("barrier").then(function () {
+        //
+        //});
+        //k3po.notify("barrier").then(function () {
+        //
+        //});
+        k3po.finish().then(function () {
+            //mock.assert();
         });
     });
-
-    it('client.with.barriers', function () {
-        var server = net.createServer(function(socket){
-            awaitBarrier("NOTIFYING_BARRIER", function(){
-                notifyBarrier("AWAITING_BARRIER");
-            });
-            socket.on('data', function(data){
-                assert.equal("echo", data.toString());
-                socket.write('echo');
-                socket.pipe(socket);
-                socket.destroy();
-                server.close();
-            });
-        });
-        server.listen(8000, '127.0.0.1');
-        k3poFinish();
-    });
-
 });

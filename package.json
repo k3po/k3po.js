@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://stash.kaazing.wan/scm/kgexport/gateway.client.javascript.git"
+    "_url": "http://stash.kaazing.wan/scm/kgexport/gateway.client.javascript.git"
   },
   "bugs": {
-    "url": "https://github.com/kaazing/k3po/issues"
+    "_url": "https://github.com/kaazing/k3po/issues"
   },
   "licenses": [
     {
       "type": "Apache 2",
-      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+      "_url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   ],
   "engines": {
@@ -44,7 +44,7 @@
     "sinon": "1.17.2 ",
     "grunt-webdriver": "1.0.0",
     "webdriverio": "3.2.6",
-    "xhr": "2.0.5"
+    "websocket": "1.0.22"
   },
   "dependencies": {
     "browserify": "^11.0.1",
