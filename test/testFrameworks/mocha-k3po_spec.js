@@ -5,17 +5,16 @@ var WebSocket = require('websocket').w3cwebsocket;
 
 describe('WsClient', function () {
 
-    var hmm = k3poConfig;
-    hmm.scriptRoot('org/kaazing/specification/ws/framing');//._url("tcp://localhost");
+    k3poConfig.scriptRoot('org/kaazing/specification/ws/framing');
 
     it('echo.text.payload.length.125/handshake.response.and.frame', function (done) {
-        //todo
+        var echoText = "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345";
         var ws = new WebSocket("ws://localhost:8080/echo");
         ws.onopen = function () {
-            ws.send("12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345");
+            ws.send(echoText);
         };
-        ws.ondata = function () {
-            // TODO: verify echoed payload
+        ws.onmessage = function (event) {
+            assert.equal(event.data, echoText);
             ws.close();
             done();
         };
@@ -33,5 +32,22 @@ describe('WsClient', function () {
         k3po.finish().then(function () {
             //mock.assert();
         });
+    });
+
+    this.timeout(5000);
+    it('echo.text.payload.length.125/handshake.response.and.frame', function (done) {
+        var echoText = "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345";
+        var ws = new WebSocket("ws://localhost:8080/echo");
+        ws.onopen = function () {
+            ws.send(echoText);
+        };
+        ws.onmessage = function (event) {
+            assert.equal(event.data, echoText);
+            k3po.finish().then(function(){
+                done();
+            });
+            ws.close();
+        };
+        ws.onerror = done;
     });
 });

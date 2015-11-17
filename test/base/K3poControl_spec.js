@@ -53,7 +53,6 @@ describe("Control", function () {
     var mock;
 
     beforeEach(function () {
-        console.log("test://localhost");
         control = new K3poControl();
         testTransport = ControlTransportApi.prototype;
         mock = sinon.mock(testTransport);
