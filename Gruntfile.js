@@ -63,7 +63,7 @@ module.exports = function (grunt) {
                     reporter: 'spec',
                     ui: 'mocha-k3po',
                     require: 'lib/testFrameworks/mocha-k3po.js',
-                    captureFile: "build/testMochaK3po.txt",
+                    captureFile: "build/testMochaK3po.txt"
                 },
                 src: ['test/testFrameworks/mocha-k3po*.js']
             },
@@ -79,7 +79,7 @@ module.exports = function (grunt) {
                         }
                     }
                 },
-                src: ['test/testFrameworks/mocha-browser-k3po*.js']
+                src: ['test/testFrameworks/mocha-k3po*.js']
             }
         },
 
@@ -102,5 +102,5 @@ module.exports = function (grunt) {
 
     // DPW - This does not work currently becuase of bugs stopping the robot, and stopping nodeunit
     grunt.registerTask('default', ['clean', 'jshint', 'mochaTest:testBase', 'k3po:start', 'mochaTest:testMochaK3po', 'mochaTest:testMochaK3poBrowserSupport']);
-    //grunt.registerTask('default', ['clean', 'jshint', 'mochaTest:testBase', 'k3po:start', 'mochaTest:testMochaK3poBrowserSupport']);
+    grunt.registerTask('firefox', ['clean', 'jshint', 'mochaTest:testBase', 'k3po:start', 'mochaTest:testMochaK3poBrowserSupport']);
 };

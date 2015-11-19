@@ -1,11 +1,14 @@
 require("../../lib/transports/TcpTransportFactory.js");
-var assert = require('assert');
-var net = require('net');
+var chai = require('chai');
 var WebSocket = require('websocket').w3cwebsocket;
 
 describe('WsClient', function () {
 
+    //console.log(assert);
     k3poConfig.scriptRoot('org/kaazing/specification/ws/framing');
+    browserConfig.origin('http://localhost:8080');
+    browserConfig.origin('http://localhost:8080').addResource("http://chaijs.com/chai.js");
+
 
     it('echo.text.payload.length.125/handshake.response.and.frame', function (done) {
         var echoText = "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345";
@@ -14,40 +17,40 @@ describe('WsClient', function () {
             ws.send(echoText);
         };
         ws.onmessage = function (event) {
-            assert.equal(event.data, echoText);
+            chai.assert.equal(event.data, echoText);
+            console.log("data is correct " + done);
             ws.close();
             done();
         };
         ws.onerror = done;
 
-        k3po.start().then(function () {
-
-        });
+        //k3po.start().then(function () {
+        //
+        //});
         //k3po.await("barrier").then(function () {
         //
         //});
         //k3po.notify("barrier").then(function () {
         //
         //});
-        k3po.finish().then(function () {
-            //mock.assert();
-        });
+        //k3po.finish().then(function () {
+        //    //mock.assert();
+        //});
     });
 
-    this.timeout(5000);
-    it('echo.text.payload.length.125/handshake.response.and.frame', function (done) {
-        var echoText = "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345";
-        var ws = new WebSocket("ws://localhost:8080/echo");
-        ws.onopen = function () {
-            ws.send(echoText);
-        };
-        ws.onmessage = function (event) {
-            assert.equal(event.data, echoText);
-            k3po.finish().then(function(){
-                done();
-            });
-            ws.close();
-        };
-        ws.onerror = done;
-    });
+    //it('echo.text.payload.length.125/handshake.response.and.frame', function (done) {
+    //    var echoText = "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345";
+    //    var ws = new WebSocket("ws://localhost:8080/echo");
+    //    ws.onopen = function () {
+    //        ws.send(echoText);
+    //    };
+    //    ws.onmessage = function (event) {
+    //        chai.assert.equal(event.data, echoText);
+    //        k3po.finish().then(function () {
+    //            done();
+    //        });
+    //        ws.close();
+    //    };
+    //    ws.onerror = done;
+    //});
 });
