@@ -6,9 +6,7 @@ describe('WsClient', function () {
 
     //console.log(assert);
     k3poConfig.scriptRoot('org/kaazing/specification/ws/framing');
-    browserConfig.origin('http://localhost:8080');
     browserConfig.origin('http://localhost:8080').addResource("http://chaijs.com/chai.js");
-
 
     it('echo.text.payload.length.125/handshake.response.and.frame', function (done) {
         var echoText = "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345";
@@ -18,11 +16,12 @@ describe('WsClient', function () {
         };
         ws.onmessage = function (event) {
             chai.assert.equal(event.data, echoText);
-            console.log("data is correct " + done);
             ws.close();
+        };
+
+        ws.onclose = ws.onerror = function () {
             done();
         };
-        ws.onerror = done;
 
         //k3po.start().then(function () {
         //
