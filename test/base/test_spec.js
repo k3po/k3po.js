@@ -12,8 +12,6 @@
 //
 //    afterEach(function () {
 //        if (!this.ok) {
-//            //var pased = ();
-//            //console.log("WAHAHAHA " + pased + "  " + this.currentTest.state);
 //            this.test.error(new Error('something went wrong'));
 //        }
 //    });

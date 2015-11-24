@@ -34,14 +34,12 @@
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-connect": "^0.8.0",
-    "grunt-contrib-jshint": "^0.11.2",
+    "grunt-contrib-jshint": "0.11.3",
     "grunt-contrib-nodeunit": "^0.3.3",
     "grunt-k3po": "0.1.0",
     "grunt-mocha-test": "^0.12.2",
-    "grunt-webdriver": "^1.0.0",
     "promise": "^6.0.1",
     "sinon": "1.17.2 ",
-    "grunt-webdriver": "1.0.0",
     "websocket": "1.0.22"
   },
   "dependencies": {
@@ -54,7 +52,6 @@
     "resolve": "^1.1.6",
     "watchify": "^3.3.1",
     "detective": "4.3.1",
-    "grunt-k3po": "^0.1.0",
     "webdriverio": "3.2.6"
   },
   "java": {

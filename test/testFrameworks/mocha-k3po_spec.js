@@ -53,52 +53,52 @@ describe('WsClient', function () {
 
 
     // Demo assertion error
-    //it('full.feature.test/server', function (done) {
-    //    var echoText = "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345";
-    //    var ws = new WebSocket("ws://localhost:8080/echo");
-    //    ws.onopen = function () {
-    //        k3po.notify("CLIENT_READY_TO_READ");
-    //        k3po.await("SERVER_READY_TO_READ").then(function () {
-    //            ws.send(echoText);
-    //        });
-    //    };
-    //
-    //    ws.onmessage = function (event) {
-    //        // what to do about exceptions
-    //        chai.assert.equal(false, true);
-    //        ws.close();
-    //    };
-    //
-    //    ws.onclose = ws.onerror = function () {
-    //    };
-    //
-    //    k3po.finish().then(function () {
-    //        done();
-    //    });
-    //});
+    it('full.feature.test/server', function (done) {
+        var echoText = "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345";
+        var ws = new WebSocket("ws://localhost:8080/echo");
+        ws.onopen = function () {
+            k3po.notify("CLIENT_READY_TO_READ");
+            k3po.await("SERVER_READY_TO_READ").then(function () {
+                ws.send(echoText);
+            });
+        };
+
+        ws.onmessage = function (event) {
+            // what to do about exceptions
+            chai.assert.equal(false, true);
+            ws.close();
+        };
+
+        ws.onclose = ws.onerror = function () {
+        };
+
+        k3po.finish().then(function () {
+            done();
+        });
+    });
 
     // Demo script diff
-    //it('full.feature.test/server', function (done) {
-    //    var echoText = "bad expectations";
-    //    var ws = new WebSocket("ws://localhost:8080/echo");
-    //    ws.onopen = function () {
-    //        k3po.notify("CLIENT_READY_TO_READ");
-    //        k3po.await("SERVER_READY_TO_READ").then(function () {
-    //            ws.send(echoText);
-    //            k3po.finish().then(function () {
-    //                done();
-    //            });
-    //        });
-    //    };
-    //
-    //    ws.onmessage = function (event) {
-    //        chai.assert.equal(event.data, echoText);
-    //        ws.close();
-    //    };
-    //
-    //    ws.onclose = ws.onerror = function () {
-    //    };
-    //
-    //});
+    it('full.feature.test/server', function (done) {
+        var echoText = "bad expectations";
+        var ws = new WebSocket("ws://localhost:8080/echo");
+        ws.onopen = function () {
+            k3po.notify("CLIENT_READY_TO_READ");
+            k3po.await("SERVER_READY_TO_READ").then(function () {
+                ws.send(echoText);
+                k3po.finish().then(function () {
+                    done();
+                });
+            });
+        };
+
+        ws.onmessage = function (event) {
+            chai.assert.equal(event.data, echoText);
+            ws.close();
+        };
+
+        ws.onclose = ws.onerror = function () {
+        };
+
+    });
 
 });
