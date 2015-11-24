@@ -70,7 +70,7 @@ describe("K3poControl", function () {
         var url = "test://localhost.com";
 
         mock.expects("connect").once().withArgs(url, done).callsArg(1);
-        mock.expects("onMessage").once();
+        mock.expects("on").once();
 
         control.connect(url, done);
 
@@ -87,7 +87,7 @@ describe("K3poControl", function () {
             "\n" + description;
 
         mock.expects("connect").once().returns(mock);
-        mock.expects("onMessage").once().callsArgWith(0, event);
+        mock.expects("on").once().callsArgWith(1, event);
 
         control.connect(url, function () {
         });
@@ -108,7 +108,7 @@ describe("K3poControl", function () {
             "\n" + script;
 
         mock.expects("connect").once().returns(mock);
-        mock.expects("onMessage").once().callsArgWith(0, event);
+        mock.expects("on").once().callsArgWith(1, event);
 
         control.connect(url, function () {
         });
@@ -128,7 +128,7 @@ describe("K3poControl", function () {
             "\n";
 
         mock.expects("connect").once().returns(mock);
-        mock.expects("onMessage").once().callsArgWith(0, event);
+        mock.expects("on").once().callsArgWith(1, event);
 
         control.connect(url, function () {
         });
@@ -148,7 +148,7 @@ describe("K3poControl", function () {
             "\n" + script;
 
         mock.expects("connect").once().returns(mock);
-        mock.expects("onMessage").once().callsArgWith(0, event);
+        mock.expects("on").once().callsArgWith(1, event);
 
         control.connect(url, function () {
         });
@@ -164,7 +164,7 @@ describe("K3poControl", function () {
         var event = "STARTED\n" + "future-header:future-value\n\n";
 
         mock.expects("connect").once().returns(mock);
-        mock.expects("onMessage").once().callsArgWith(0, event);
+        mock.expects("on").once().callsArgWith(1, event);
 
         control.connect(url, function () {
         });
@@ -179,7 +179,7 @@ describe("K3poControl", function () {
         var cmd = new AbortCommand();
 
         mock.expects("connect").once().returns(mock);
-        mock.expects("onMessage").once();
+        mock.expects("on").once();
         mock.expects("write").once().withArgs("ABORT\n\n");
         mock.expects("flush").once().callsArg(0);
 
@@ -193,7 +193,7 @@ describe("K3poControl", function () {
         var cmd = new AwaitCommand("myBarrier");
 
         mock.expects("connect").once().returns(mock);
-        mock.expects("onMessage").once();
+        mock.expects("on").once();
         mock.expects("write").once().withArgs("AWAIT\nbarrier:myBarrier\n\n");
         mock.expects("flush").once().callsArg(0);
 
@@ -207,7 +207,7 @@ describe("K3poControl", function () {
         var cmd = new NotifyCommand("myBarrier");
 
         mock.expects("connect").once().returns(mock);
-        mock.expects("onMessage").once();
+        mock.expects("on").once();
         mock.expects("write").once().withArgs("NOTIFY\nbarrier:myBarrier\n\n");
         mock.expects("flush").once().callsArg(0);
 
@@ -221,7 +221,7 @@ describe("K3poControl", function () {
         var cmd = new PrepareCommand(["script"]);
 
         mock.expects("connect").once().returns(mock);
-        mock.expects("onMessage").once();
+        mock.expects("on").once();
         mock.expects("write").once().withArgs("PREPARE\nversion:2.0\nname:script\n\n");
         mock.expects("flush").once().callsArg(0);
 
@@ -235,7 +235,7 @@ describe("K3poControl", function () {
         var cmd = new StartCommand();
 
         mock.expects("connect").once().returns(mock);
-        mock.expects("onMessage").once();
+        mock.expects("on").once();
         mock.expects("write").once().withArgs("START\n\n");
         mock.expects("flush").once().callsArg(0);
 
