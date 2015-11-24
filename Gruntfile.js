@@ -81,13 +81,8 @@ module.exports = function (grunt) {
                 },
                 src: ['test/testFrameworks/mocha-k3po*.js']
             }
-        },
-
-        webdriver: {
-            test: {
-                configFile: './wdio.conf.js'
-            }
         }
+
     });
 
     // These plugins provide necessary tasks.
@@ -100,7 +95,6 @@ module.exports = function (grunt) {
     grunt.registerTask('startServer', ['connect']);
     grunt.loadNpmTasks('grunt-webdriver');
 
-    // DPW - This does not work currently becuase of bugs stopping the robot, and stopping nodeunit
-    grunt.registerTask('default', ['clean', 'jshint', 'mochaTest:testBase', 'k3po:start', 'mochaTest:testMochaK3po', 'mochaTest:testMochaK3poBrowserSupport']);
+    grunt.registerTask('default', ['clean', 'jshint', 'mochaTest:testBase', 'k3po:start', 'mochaTest:testMochaK3po']);
     grunt.registerTask('firefox', ['clean', 'jshint', 'mochaTest:testBase', 'k3po:start', 'mochaTest:testMochaK3poBrowserSupport']);
 };
