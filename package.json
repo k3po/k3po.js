@@ -3,6 +3,7 @@
   "description": "Project for running K3P0 based tests from/with javascript: https://github.com/kaazing/robot",
   "homepage": "https://github.com/kaazing/k3po",
   "version": "0.1.0",
+  "license" : "Apache-2.0",
   "author": {
     "name": "Kaazing",
     "email": "david.witherspoon@kaazing.com"
@@ -10,9 +11,6 @@
   "repository": {
     "type": "git",
     "_url": "http://stash.kaazing.wan/scm/kgexport/gateway.client.javascript.git"
-  },
-  "bugs": {
-    "_url": "https://github.com/kaazing/k3po/issues"
   },
   "licenses": [
     {
@@ -36,7 +34,7 @@
     "grunt-contrib-connect": "^0.8.0",
     "grunt-contrib-jshint": "0.11.3",
     "grunt-contrib-nodeunit": "^0.3.3",
-    "grunt-k3po": "0.1.0",
+    "grunt-k3po": "0.1.0-alpha-1",
     "grunt-mocha-test": "^0.12.2",
     "promise": "^6.0.1",
     "sinon": "1.17.2 ",
