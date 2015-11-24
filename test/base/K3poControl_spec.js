@@ -1,15 +1,14 @@
 'use strict';
 
-var k3poControl = require('../../src/base/K3poControl.js'),
-    K3poControl = k3poControl.K3poControl,
-    AbortCommand = k3poControl.AbortCommand,
-    AwaitCommand = k3poControl.AwaitCommand,
-    NotifyCommand = k3poControl.NotifyCommand,
-    PrepareCommand = k3poControl.PrepareCommand,
-    StartCommand = k3poControl.StartCommand;
-var ControlTransportApi = require('../../src/base/ControlTransportApi.js').ControlTransportApi;
-var ControlTransportFactorySpi = require('../../src/base/ControlTransportFactorySpi.js').ControlTransportFactorySpi;
-var controlTransportFactory = require('../../src/base/ControlTransportFactory.js');
+var K3poControl = require('../../lib/Control.js');
+var AbortCommand = require('../../lib/commands/AbortCommand.js');
+var AwaitCommand = require('../../lib/commands/AwaitCommand.js');
+var NotifyCommand = require('../../lib/commands/NotifyCommand.js');
+var PrepareCommand = require('../../lib/commands/PrepareCommand.js');
+var StartCommand = require('../../lib/commands/StartCommand.js');
+var ControlTransportApi = require('../../lib/transports/ControlTransportApi.js');
+var ControlTransportFactorySpi = require('../../lib/transports/ControlTransportFactorySpi.js');
+var controlTransportFactory = require('../../lib/transports/ControlTransportFactory.js');
 var sinon = require('sinon');
 var assert = require('assert');
 
@@ -49,7 +48,7 @@ controlTransportFactory.registerTransportFactorySpi(new TestTransportFactory());
 /**
  * Tests
  */
-describe("K3poControl", function () {
+describe("Control", function () {
     var control;
     var mock;
 

@@ -10,6 +10,6 @@
     "boss": true,
     "eqnull": true,
     "node": true,
-    "predef": ["describe", "it", "beforeEach", "afterEach", "expect", "before", "after"]
+    "predef": ["describe", "it", "beforeEach", "afterEach", "expect", "before", "after", "awaitBarrier", "notifyBarrier", "k3po", "k3poConfig", "browserConfig", "Promise", "alert"]
 }
 
