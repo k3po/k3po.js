@@ -2,6 +2,14 @@
 
 k3po.js is used to run [K3po Scripts](https://github.com/k3po/k3po/wiki/Scripting-Language) against JavaScript libraries in both the browser and node modules.
 
+### It consists of 
+
+1. Control Transport Factory which provides communication protocol for contacting k3po driver
+1. Control.js, a [k3po control protocol](https://github.com/k3po/k3po/tree/develop/specification/k3po.control) that is used by talk to the [K3po Driver](https://github.com/k3po/k3po/tree/develop/driver) via a Transport that provides an API for starting/stopping k3po scripts
+1. BrowserRunner, which provides a mechanism for running javascript test functions in a browser 
+1. mocha-k3po.js, a [mocha](https://mochajs.org/) plugin that can control k3po scripts as part of the test framework, and run them in browser or locally via configuration
+
+The [K3po driver](https://github.com/k3po/k3po/tree/develop/driver) is launched prior to tests via [grunt-k3po](https://github.com/k3po/grunt-k3po) plugin
 
 ### Examples
 
@@ -107,11 +115,7 @@ Configuration via Grunt
 
 ```
 
-It consists of 
+### Building
 
-1. Control Transport Factory which provides communication protocol for contacting k3po driver
-1. Control.js, a [k3po control protocol](https://github.com/k3po/k3po/tree/develop/specification/k3po.control) that is used by talk to the [K3po Driver](https://github.com/k3po/k3po/tree/develop/driver) via a Transport that provides an API for starting/stopping k3po scripts
-1. BrowserRunner, which provides a mechanism for running javascript test functions in a browser 
-1. mocha-k3po.js, a [mocha](https://mochajs.org/) plugin that can control k3po scripts as part of the test framework, and run them in browser or locally via configuration
-
-The [K3po driver](https://github.com/k3po/k3po/tree/develop/driver) is launched prior to tests via [grunt-k3po](https://github.com/k3po/grunt-k3po) plugin
+1. `npm install`
+1. `grunt`
