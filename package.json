@@ -57,26 +57,11 @@
       {
         "groupId": "org.kaazing",
         "artifactId": "k3po.driver",
-        "version": "3.0.0-alpha-1"
-      },
-      {
-        "groupId": "org.kaazing",
-        "artifactId": "specification.ws",
         "version": "develop-SNAPSHOT"
       },
       {
         "groupId": "org.kaazing",
-        "artifactId": "specification.k3po.control",
-        "version": "3.0.0-alpha-1"
-      },
-      {
-        "groupId": "org.kaazing",
-        "artifactId": "specification.http",
-        "version": "3.0.0-alpha-1"
-      },
-      {
-        "groupId": "org.kaazing",
-        "artifactId": "specification.utils",
+        "artifactId": "specification.ws",
         "version": "develop-SNAPSHOT"
       }
     ]
