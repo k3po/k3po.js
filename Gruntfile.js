@@ -32,7 +32,8 @@ module.exports = function (grunt) {
         k3po: {
             start: {
                 options: {
-                    goal: "start"
+                    goal: "start",
+                    scripts: "test/scripts"
                 }
             },
             stop: {
@@ -43,6 +44,7 @@ module.exports = function (grunt) {
             daemon: {
                 options: {
                     goal: "start",
+                    scripts: "test/scripts",
                     daemon: false
                 }
             }

@@ -4,10 +4,9 @@ var WebSocket = require('websocket').w3cwebsocket;
 
 describe('WsClient', function () {
 
-    k3poConfig.scriptRoot('org/kaazing/specification/utils');
     browserConfig.origin('http://localhost:8080').addResource("http://chaijs.com/chai.js");
 
-    it('full.feature.test/server', function (done) {
+    it('echo.from.ws.server', function (done) {
 
         var echoText = "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345";
         var ws = new WebSocket("ws://localhost:8080/echo");
@@ -28,7 +27,7 @@ describe('WsClient', function () {
         };
     });
 
-    it('full.feature.test/server', function (done) {
+    it('echo.from.ws.server', function (done) {
         var echoText = "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345";
         var ws = new WebSocket("ws://localhost:8080/echo");
         ws.onopen = function () {
@@ -53,7 +52,7 @@ describe('WsClient', function () {
 
 
     //// Demo assertion error
-    //it('full.feature.test/server', function (done) {
+    //it('echo.from.ws.server', function (done) {
     //    var echoText = "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345";
     //    var ws = new WebSocket("ws://localhost:8080/echo");
     //    ws.onopen = function () {
@@ -78,7 +77,7 @@ describe('WsClient', function () {
     //});
 
     //// Demo script diff
-    //it('full.feature.test/server', function (done) {
+    //it('echo.from.ws.server', function (done) {
     //    var echoText = "bad expectations";
     //    var ws = new WebSocket("ws://localhost:8080/echo");
     //    ws.onopen = function () {
