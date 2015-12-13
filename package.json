@@ -57,12 +57,12 @@
       {
         "groupId": "org.kaazing",
         "artifactId": "k3po.driver",
-        "version": "develop-SNAPSHOT"
+        "version": "3.0.0-alpha-5"
       },
       {
         "groupId": "org.kaazing",
         "artifactId": "specification.ws",
-        "version": "develop-SNAPSHOT"
+        "version": "3.0.0-alpha-5"
       }
     ]
   }
