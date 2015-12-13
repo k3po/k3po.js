@@ -99,5 +99,4 @@ describe('WsClient', function () {
     //    };
     //
     //});
-
 });
