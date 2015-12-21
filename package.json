@@ -1,0 +1,69 @@
+{
+  "name": "k3po.js",
+  "description": "Project for running K3P0 based tests from/with javascript: https://github.com/kaazing/robot",
+  "homepage": "https://github.com/kaazing/k3po",
+  "version": "0.1.0",
+  "license" : "Apache-2.0",
+  "author": {
+    "name": "Kaazing",
+    "email": "david.witherspoon@kaazing.com"
+  },
+  "repository": {
+    "type": "git",
+    "_url": "http://stash.kaazing.wan/scm/kgexport/gateway.client.javascript.git"
+  },
+  "licenses": [
+    {
+      "type": "Apache 2",
+      "_url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  ],
+  "engines": {
+    "node": ">= 1.0.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "chai": "*",
+    "escape-string-regexp": "1.0.2",
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^4.0.1",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-connect": "^0.8.0",
+    "grunt-contrib-jshint": "0.11.3",
+    "grunt-contrib-nodeunit": "^0.3.3",
+    "grunt-k3po": "0.1.0-alpha-1",
+    "grunt-mocha-test": "^0.12.2",
+    "promise": "^6.0.1",
+    "sinon": "1.17.2 ",
+    "websocket": "1.0.22"
+  },
+  "dependencies": {
+    "async": "^0.9.0",
+    "colors":"1.1.2",
+    "diff": "1.4.0",
+    "glob": "^5.0.5",
+    "lodash": "^3.8.0",
+    "mocha": "2.3.3",
+    "resolve": "^1.1.6",
+    "watchify": "^3.3.1",
+    "detective": "4.3.1",
+    "webdriverio": "3.2.6"
+  },
+  "java": {
+    "dependencies": [
+      {
+        "groupId": "org.kaazing",
+        "artifactId": "k3po.driver",
+        "version": "3.0.0-alpha-5"
+      },
+      {
+        "groupId": "org.kaazing",
+        "artifactId": "specification.ws",
+        "version": "3.0.0-alpha-5"
+      }
+    ]
+  }
+}
