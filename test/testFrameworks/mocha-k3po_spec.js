@@ -20,10 +20,10 @@ describe('WsClient', function () {
         ws.onmessage = function (event) {
             chai.assert.equal(event.data, echoText);
             ws.close();
+            done();
         };
 
         ws.onclose = ws.onerror = function () {
-            done();
         };
     });
 
