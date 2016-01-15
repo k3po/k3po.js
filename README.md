@@ -127,3 +127,19 @@ Configuration via Grunt
 
 1. `npm install`
 1. `grunt`
+
+### Debugging the browser
+
+By default the browser closes after the test, in case of test failures you can pass the debug flag to the browser
+configuration as shown to keep it open.  This allows access to the browser javascript console.
+
+```JavaScript
+browser: {
+    desiredCapabilities: {
+        browserName: 'firefox'
+    },
+    debug: true
+}
+
+```
+
