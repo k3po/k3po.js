@@ -7,7 +7,7 @@ addons:
     no_ssl_bump_domains: all
 env:
   global:
-    - NODE_VERSION=0.10
+    - NODE_VERSION=4
     - SAUCE_USERNAME="kaazing-build"
     - SAUCE_ACCESS_KEY="f350bbbb-376e-4c0e-b7b6-ae78f58f67f2"
   matrix:
