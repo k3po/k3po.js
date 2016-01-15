@@ -1,3 +1,5 @@
+[![Sauce Test Status](https://saucelabs.com/buildstatus/kaazing-build)](https://saucelabs.com/u/kaazing-build)
+
 # K3PO for JavaScript
 
 k3po.js is used to run [K3po Scripts](https://github.com/k3po/k3po/wiki/Scripting-Language) against JavaScript libraries in both the browser and node modules.
