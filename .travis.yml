@@ -2,10 +2,16 @@ language: java
 jdk:
   - oraclejdk8
 env:
-  - NODE_VERSION=0.10
+  - NODE_VERSION=stable
+  matrix:
+    - platform=Linux
+    - platform="Windows 7"
+    - platform="OS X 10.11
+    - browser=firefox
+    - browser=chrome
 install:
   - nvm install $NODE_VERSION
   - npm install -g grunt-cli
   - npm install
 script:
-  - grunt
+  - grunt sauceTest
