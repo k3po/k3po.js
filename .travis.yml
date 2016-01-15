@@ -1,12 +1,12 @@
+sudo: false
 language: java
 jdk:
   - oraclejdk8
 env:
   global:
-    - NODE_VERSION=stable
+    - NODE_VERSION=0.10
     - SAUCE_USERNAME="kaazing-build"
     - SAUCE_ACCESS_KEY="f350bbbb-376e-4c0e-b7b6-ae78f58f67f2"
-  matrix:
     - platform=Linux
     - platform="Windows 7"
     - platform="OS X 10.11"
