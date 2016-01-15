@@ -2,11 +2,14 @@ language: java
 jdk:
   - oraclejdk8
 env:
-  - NODE_VERSION=stable
+  global:
+    - NODE_VERSION=stable
+    - SAUCE_USERNAME="kaazing-build"
+    - SAUCE_ACCESS_KEY="f350bbbb-376e-4c0e-b7b6-ae78f58f67f2"
   matrix:
     - platform=Linux
     - platform="Windows 7"
-    - platform="OS X 10.11
+    - platform="OS X 10.11"
     - browser=firefox
     - browser=chrome
 install:
