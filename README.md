@@ -3,7 +3,7 @@
 
 [build-status-image]: https://travis-ci.org/k3po/k3po.js.svg?branch=develop
 [build-status]: https://travis-ci.org/k3po/k3po.js
-[sauce-test-status-image]: https://saucelabs.com/browser-matrix/kaazing-build.svg
+[sauce-test-status-image]: https://saucelabs.com/browser-matrix/kaazing-build.svg?auth=e649d1664332b5284759585f345aa3e4
 [sauce-test-status]: https://saucelabs.com/u/kaazing-build
 
 # K3PO for JavaScript
