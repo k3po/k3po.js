@@ -1,4 +1,10 @@
-[![Sauce Test Status](https://saucelabs.com/buildstatus/kaazing-build)](https://saucelabs.com/u/kaazing-build)
+[![Build Status][build-status-image]][build-status]
+[![Sauce Test Status][sauce-test-status-image]][sauce-test-status]
+
+[build-status-image]: https://travis-ci.org/k3po/k3po.js.svg?branch=develop
+[build-status]: https://travis-ci.org/k3po/k3po.js
+[sauce-test-status-image]: https://saucelabs.com/browser-matrix/kaazing-build.svg
+[sauce-test-status]: https://saucelabs.com/u/kaazing-build
 
 # K3PO for JavaScript
 
