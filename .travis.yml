@@ -8,8 +8,6 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-4.8
-  sauce_connect:
-    no_ssl_bump_domains: all
 env:
   global:
     - CXX=g++-4.8
@@ -27,8 +25,12 @@ env:
     - platform="Windows 7" browser="internet explorer" version=9
     - platform="Windows 7" browser="internet explorer" version=8
     - platform="OS X 10.11" browser=safari version=9
-    - platform=Linux browser=android version=5.1 device="Android Emulator"
+    # not working with current version on webdriverio
+    # please see https://github.com/webdriverio/webdriverio/issues/865
+    # - platform=Linux browser=android version=5.1 device="Android Emulator"
     - platform="OS X 10.10" browser=iphone version=9.2 device="iPad Retina"
+before_install:
+  - ./sauce_connect_setup.sh
 install:
   - nvm install $NODE_VERSION
   - npm install -g grunt-cli
