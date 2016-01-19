@@ -97,8 +97,10 @@ module.exports = function (grunt) {
                         desiredCapabilities: {
                             browserName: process.env.browser,
                             platform: process.env.platform,
+                            version: process.env.version,
+                            deviceName: process.env.device,
                             tags: [process.env.browser,process.env.platform],
-                            name: 'k3po.js spec tests on '+process.env.browser+"/"+process.env.platform,
+                            name: 'k3po.js spec tests on '+process.env.browser+"/"+process.env.version+"/"+process.env.platform,
                             'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
                             build: process.env.TRAVIS_BUILD_NUMBER
                         },
