@@ -1,4 +1,4 @@
-sudo: false
+sudo: required
 language: java
 jdk:
   - oraclejdk8
@@ -7,7 +7,7 @@ addons:
     no_ssl_bump_domains: all
 env:
   global:
-    - NODE_VERSION=0.12
+    - NODE_VERSION=stable
     - SAUCE_USERNAME="kaazing-build"
     - SAUCE_ACCESS_KEY="f350bbbb-376e-4c0e-b7b6-ae78f58f67f2"
   matrix:
@@ -23,6 +23,10 @@ env:
     - platform="OS X 10.11" browser=safari version=9
     - platform=Linux browser=android version=5.1 device="Android Emulator"
     - platform="OS X 10.10" browser=iphone version=9.2 device="iPad Retina"
+before_install:
+  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+  - sudo apt-get update -q
+  - sudo apt-get install gcc-4.8 -y
 install:
   - nvm install $NODE_VERSION
   - npm install -g grunt-cli
