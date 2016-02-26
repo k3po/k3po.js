@@ -75,9 +75,9 @@ module.exports = function (grunt) {
                     ui: 'mocha-k3po',
                     require: 'lib/testFrameworks/mocha-k3po.js',
                     captureFile: "build/testMochaK3po.txt",
-                    // timeout: 5000,
+                    timeout: 10000,
                     browser: {
-                        // debug: true,
+                        debug: true,
                         desiredCapabilities: {
                             browserName: 'firefox'
                         }
@@ -104,10 +104,10 @@ module.exports = function (grunt) {
                             'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
                             build: process.env.TRAVIS_BUILD_NUMBER
                         },
-                        host: 'localhost',
-                        port: '4445',
-                        user: process.env.SAUCE_USERNAME,
-                        key: process.env.SAUCE_ACCESS_KEY
+                    host: 'localhost',
+                    port: '4445',
+                    user: process.env.SAUCE_USERNAME,
+                    key: process.env.SAUCE_ACCESS_KEY
                     }
                 },
                 src: ['test/testFrameworks/mocha-k3po*.js']

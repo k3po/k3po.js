@@ -28,6 +28,7 @@ describe('WsClient', function () {
     });
 
     it('echo.from.ws.server', function (done) {
+
         var echoText = "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345";
         var ws = new WebSocket("ws://localhost:8080/echo");
         ws.onopen = function () {
