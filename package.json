@@ -50,7 +50,8 @@
     "resolve": "^1.1.6",
     "watchify": "^3.3.1",
     "detective": "4.3.1",
-    "webdriverio": "3.2.6"
+    "webdriverio": "3.2.6",
+    "saucelabs": "1.2.0"
   },
   "java": {
     "dependencies": [

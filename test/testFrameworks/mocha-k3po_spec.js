@@ -20,14 +20,15 @@ describe('WsClient', function () {
         ws.onmessage = function (event) {
             chai.assert.equal(event.data, echoText);
             ws.close();
+            done();
         };
 
         ws.onclose = ws.onerror = function () {
-            done();
         };
     });
 
     it('echo.from.ws.server', function (done) {
+
         var echoText = "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345";
         var ws = new WebSocket("ws://localhost:8080/echo");
         ws.onopen = function () {
