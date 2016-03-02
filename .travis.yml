@@ -12,13 +12,14 @@ env:
   global:
     - CXX=g++-4.8
     - NODE_VERSION=stable
-    - SAUCE_USERNAME="kaazing-build"
-    - SAUCE_ACCESS_KEY="f350bbbb-376e-4c0e-b7b6-ae78f58f67f2"
+    - SAUCE_USERNAME="kaazing-k3po"
+    - SAUCE_ACCESS_KEY="14505593-10b3-4fa5-a592-ff3e88eed11d"
   matrix:
     - platform="Linux" browser="firefox" version="44.0"
-    - platform="Linux" browser="firefox" version="dev"
+    # not starting on Sauce Labs(build errors)
+    # - platform="Linux" browser="firefox" version="dev"
     - platform="Linux" browser="chrome" version="48.0"
-    - platform="Linux" browser="chrome" version="dev"
+    - platform="Windows 10" browser="chrome" version="dev"
     - platform="Windows 10" browser="MicrosoftEdge" version="20.10240"
     - platform="Windows 10" browser="internet explorer" version="11.0"
     - platform="Windows 8" browser="internet explorer" version="10.0"

@@ -91,7 +91,7 @@ module.exports = function (grunt) {
                     ui: 'mocha-k3po',
                     require: 'lib/testFrameworks/mocha-k3po.js',
                     captureFile: "build/testMochaK3po.txt",
-                    timeout: 20000,
+                    timeout: 10000,
                     browser: {
                         // debug: true,
                         desiredCapabilities: {
