@@ -92,6 +92,7 @@ module.exports = function (grunt) {
                     require: 'lib/testFrameworks/mocha-k3po.js',
                     captureFile: "build/testMochaK3po.txt",
                     timeout: 10000,
+                    ignoredBrowsers : ['internet explorer 8.0', 'internet explorer 9.0'],
                     browser: {
                         // debug: true,
                         desiredCapabilities: {
